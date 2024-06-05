@@ -1,38 +1,48 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# UrbanLux
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+**UrbanLux** is the backend NestJs application for an E-commerce application
+I have used Microservice architecture. The project is organized as a monorepo. I used RabbitMQ as messaging broker between microservices and PostgreSQL for database.
 
-## Installation
+## Live Demo
+
+TBA
+A live version of the application is hosted [TBA](TBA).
+
+The service is deployed in free tier and may not be available instantly. Please wait a few minutes for the application to start
+
+## Getting Started
+
+Please clone the repositiry from Github using the following link
+
+```
+https://github.com/ram1117/urbanlux.git
+```
+
+### Dependencies
+
+- Need PNPM to install the packages needed for the project
+- Need Git and Github account to setup and contribute to the project
+- Need Docker engine to run MongoDB and RabbitMQ in a docker container.
+
+## Installing
+
+Please run the following command to install the npm dependency packages.
 
 ```bash
 $ pnpm install
 ```
 
+Before running the app, you will need to run docker container to use database as a docker image. Run the following command to start the docker postgres image(Docker Desktop or Docker Engine need to be installed for this). If you have postgres installed in your system, you do not need to run the docker.
+
+```bash
+$ docker compose up -d
+```
+
 ## Running the app
+
+To start the NestJs app, run one of the following commands.
 
 ```bash
 # development
@@ -58,16 +68,24 @@ $ pnpm run test:e2e
 $ pnpm run test:cov
 ```
 
-## Support
+## Help
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Please raise a Github issue for errors or bugs.
 
-## Stay in touch
+https://github.com/ram1117/urbanlux/issues
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Authors
+
+### Ram Kumar Karuppusamy
+
+[@ram1117](https://github.com/ram1117) <br />
+[ram kumar karuppusamy](https://www.linkedin.com/in/ram-kumar-karuppusamy/)
+
+## Version History
+
+- 0.1
+  - Initial Release
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+This project is [MIT](./LICENSE) licensed. See the LICENSE.md file for details
