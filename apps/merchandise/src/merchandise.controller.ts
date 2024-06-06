@@ -6,7 +6,7 @@ export class MerchandiseController {
   constructor(private readonly merchandiseService: MerchandiseService) {}
 
   @Get()
-  getHello(): string {
-    return this.merchandiseService.getHello();
+  getItems() {
+    return this.merchandiseService.findMany();
   }
 }
