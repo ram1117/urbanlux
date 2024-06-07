@@ -18,6 +18,7 @@ import { InventoryRepository } from '@app/shared/infrastructure/repositories/inv
 import { APP_FILTER } from '@nestjs/core';
 import { MongoExceptionsFilter } from '@app/shared/infrastructure/filters/mongoexceptions.filter';
 import { CategoryModule } from './category/category.module';
+import { BrandModule } from './brand/brand.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { CategoryModule } from './category/category.module';
       }),
     }),
     CategoryModule,
+    BrandModule,
   ],
   controllers: [MerchandiseController],
   providers: [
