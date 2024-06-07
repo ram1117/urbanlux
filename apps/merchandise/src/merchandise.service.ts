@@ -5,6 +5,7 @@ import { SizeRepository } from '@app/shared/infrastructure/repositories/size.rep
 import { CreateSizeDto } from './infrastructure/dtos/size.dto';
 import { InventoryRepository } from '@app/shared/infrastructure/repositories/inventory.respository';
 import { ExceptionsService } from '@app/shared/infrastructure/exceptions/exceptions.service';
+import { UpdateInventoryDto } from './infrastructure/dtos/updateInventory.dto';
 
 @Injectable()
 export class MerchandiseService {
@@ -87,5 +88,19 @@ export class MerchandiseService {
     });
 
     return { message: `Size ${createSizeDto.size} created` };
+  }
+
+  async updateInventory(updateInventoryDto: UpdateInventoryDto) {
+    const inventory = await this.inventoryRepo.updateById(
+      updateInventoryDto._id,
+      {
+        stock: updateInventoryDto.stock,
+      },
+    );
+    if (!inventory)
+      this.exceptions.badReqeustException({
+        message: 'Inventory item not found',
+      });
+    return inventory;
   }
 }

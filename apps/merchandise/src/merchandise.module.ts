@@ -20,6 +20,8 @@ import {
   InventorySchema,
 } from '@app/shared/infrastructure/models/inventory.document';
 import { InventoryRepository } from '@app/shared/infrastructure/repositories/inventory.respository';
+import { APP_FILTER } from '@nestjs/core';
+import { MongoExceptionsFilter } from '@app/shared/infrastructure/filters/mongoexceptions.filter';
 
 @Module({
   imports: [
@@ -44,6 +46,7 @@ import { InventoryRepository } from '@app/shared/infrastructure/repositories/inv
     MerchandiseRepository,
     SizeRepository,
     InventoryRepository,
+    { provide: APP_FILTER, useClass: MongoExceptionsFilter },
   ],
 })
 export class MerchandiseModule {}

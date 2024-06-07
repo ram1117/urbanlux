@@ -10,6 +10,7 @@ import {
 import { MerchandiseService } from './merchandise.service';
 import { CreateItemDto } from './infrastructure/dtos/merchandise.dto';
 import { CreateSizeDto } from './infrastructure/dtos/size.dto';
+import { UpdateInventoryDto } from './infrastructure/dtos/updateInventory.dto';
 
 @Controller()
 export class MerchandiseController {
@@ -46,5 +47,10 @@ export class MerchandiseController {
   @Delete('item/:id')
   deleteItem(@Param('id') _id: string) {
     return this.merchandiseService.deleteById(_id);
+  }
+
+  @Patch('inventory')
+  updateInventory(@Body() updateInventoryDto: UpdateInventoryDto) {
+    return this.merchandiseService.updateInventory(updateInventoryDto);
   }
 }
