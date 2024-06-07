@@ -9,12 +9,26 @@ import {
   MerchandiseDocument,
   MerchandiseSchema,
 } from '@app/shared/infrastructure/models/merchandise.document';
+import { ExceptionsModule } from '@app/shared/infrastructure/exceptions/exceptions.module';
+import {
+  SizeDocument,
+  SizeDocumentSchema,
+} from '@app/shared/infrastructure/models/size.document';
+import { SizeRepository } from '@app/shared/infrastructure/repositories/size.repository';
+import {
+  InventoryDocument,
+  InventorySchema,
+} from '@app/shared/infrastructure/models/inventory.document';
+import { InventoryRepository } from '@app/shared/infrastructure/repositories/inventory.respository';
 
 @Module({
   imports: [
+    ExceptionsModule,
     DatabaseModule,
     DatabaseModule.forFeature([
       { name: MerchandiseDocument.name, schema: MerchandiseSchema },
+      { name: SizeDocument.name, schema: SizeDocumentSchema },
+      { name: InventoryDocument.name, schema: InventorySchema },
     ]),
     ConfigModule.forRoot({
       envFilePath: 'apps/merchandise/.env',
@@ -25,6 +39,11 @@ import {
     }),
   ],
   controllers: [MerchandiseController],
-  providers: [MerchandiseService, MerchandiseRepository],
+  providers: [
+    MerchandiseService,
+    MerchandiseRepository,
+    SizeRepository,
+    InventoryRepository,
+  ],
 })
 export class MerchandiseModule {}

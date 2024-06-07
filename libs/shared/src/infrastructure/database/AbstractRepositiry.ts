@@ -7,22 +7,17 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
     return await this.model.create(document);
   }
 
-  async findById(_id: string, populateQuery: any = {}) {
-    return await this.model
-      .findById(_id)
-      .populate(populateQuery)
-      .lean<TDocument>(true);
+  async findById(_id: string) {
+    return await this.model.findById(_id).lean<TDocument>(true);
   }
 
   async findMany(
     filterQuery: FilterQuery<TDocument> = {},
     sortBy: any = {},
-    populateQuery: any = { path: '' },
   ): Promise<TDocument[]> {
     return await this.model
       .find(filterQuery)
       .sort(sortBy)
-      .populate(populateQuery)
       .lean<TDocument[]>(true);
   }
 
@@ -35,5 +30,11 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
 
   async deleteById(_id: string): Promise<TDocument | null> {
     return await this.model.findByIdAndDelete(_id).lean<TDocument>(true);
+  }
+
+  async deleteMany(
+    filterQuery: FilterQuery<TDocument>,
+  ): Promise<{ acknowledged: boolean; deletedCount: number }> {
+    return await this.model.deleteMany(filterQuery);
   }
 }
