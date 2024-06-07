@@ -1,14 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CategoryRepository } from '../infrastructure/dtos/category.repository';
+import { CategoryRepository } from '@app/shared/infrastructure/repositories/category.repository';
 import { CreateCategoryDto } from './infrastructure/dtos/createcategory.dto';
-import { ExceptionsService } from '@app/shared/infrastructure/exceptions/exceptions.service';
 
 @Injectable()
 export class CategoryService {
-  constructor(
-    private readonly categoryRepo: CategoryRepository,
-    private readonly exceptions: ExceptionsService,
-  ) {}
+  constructor(private readonly categoryRepo: CategoryRepository) {}
 
   async findMany() {
     return await this.categoryRepo.findMany();

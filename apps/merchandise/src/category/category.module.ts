@@ -9,7 +9,7 @@ import {
 import { ExceptionsModule } from '@app/shared/infrastructure/exceptions/exceptions.module';
 import { MongoExceptionsFilter } from '@app/shared/infrastructure/filters/mongoexceptions.filter';
 import { APP_FILTER } from '@nestjs/core';
-import { CategoryRepository } from '../infrastructure/dtos/category.repository';
+import { CategoryRepository } from '@app/shared/infrastructure/repositories/category.repository';
 
 @Module({
   imports: [

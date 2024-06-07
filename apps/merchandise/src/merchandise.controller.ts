@@ -8,8 +8,9 @@ import {
   Post,
 } from '@nestjs/common';
 import { MerchandiseService } from './merchandise.service';
-import { CreateItemDto } from './infrastructure/dtos/merchandise.dto';
+import { CreateItemDto } from './infrastructure/dtos/createitem.dto';
 import { UpdateInventoryDto } from './infrastructure/dtos/updateInventory.dto';
+import { CreateSizeDto } from './infrastructure/dtos/createsize.dto';
 
 @Controller()
 export class MerchandiseController {
@@ -31,6 +32,11 @@ export class MerchandiseController {
     @Body() updateItemDto: Partial<CreateItemDto>,
   ) {
     return this.merchandiseService.updateById(_id, updateItemDto);
+  }
+
+  @Post('item/size')
+  addSize(@Body() createSizeDto: CreateSizeDto) {
+    return this.merchandiseService.createSize(createSizeDto);
   }
 
   @Post()

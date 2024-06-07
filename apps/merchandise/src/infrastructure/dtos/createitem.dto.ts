@@ -23,4 +23,7 @@ export class CreateItemDto {
 
   @IsString()
   brand_code: string;
+
+  @IsArray()
+  sizes: string[];
 }

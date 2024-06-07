@@ -2,8 +2,7 @@ import { IsString } from 'class-validator';
 
 export class CreateSizeDto {
   @IsString()
-  size: string;
-
+  _id: string;
   @IsString()
-  merchandise: string;
+  size: string;
 }

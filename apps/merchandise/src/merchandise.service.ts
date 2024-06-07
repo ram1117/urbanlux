@@ -1,9 +1,10 @@
 import { MerchandiseRepository } from '@app/shared/infrastructure/repositories/merchandise.repository';
 import { Injectable } from '@nestjs/common';
-import { CreateItemDto } from './infrastructure/dtos/merchandise.dto';
+import { CreateItemDto } from './infrastructure/dtos/createitem.dto';
 import { InventoryRepository } from '@app/shared/infrastructure/repositories/inventory.respository';
 import { ExceptionsService } from '@app/shared/infrastructure/exceptions/exceptions.service';
 import { UpdateInventoryDto } from './infrastructure/dtos/updateInventory.dto';
+import { CreateSizeDto } from './infrastructure/dtos/createsize.dto';
 
 @Injectable()
 export class MerchandiseService {
@@ -18,7 +19,21 @@ export class MerchandiseService {
   }
 
   async create(createItemDto: CreateItemDto) {
-    return await this.merchRepo.create({ ...createItemDto, inventory: [] });
+    const sizeInventory = await Promise.all(
+      createItemDto.sizes.map(async (size: string) => {
+        const item = await this.inventoryRepo.create({
+          size: size.toLowerCase(),
+          stock: 0,
+          price: 0,
+        });
+        return item._id;
+      }),
+    );
+
+    return await this.merchRepo.create({
+      ...createItemDto,
+      inventory: sizeInventory,
+    });
   }
 
   async findById(_id: string) {
@@ -53,16 +68,33 @@ export class MerchandiseService {
   }
 
   async updateInventory(updateInventoryDto: UpdateInventoryDto) {
-    const inventory = await this.inventoryRepo.updateById(
-      updateInventoryDto._id,
-      {
-        stock: updateInventoryDto.stock,
-      },
-    );
+    const inventory = await this.inventoryRepo.findById(updateInventoryDto._id);
     if (!inventory)
       this.exceptions.badReqeustException({
         message: 'Inventory item not found',
       });
-    return inventory;
+    return await this.inventoryRepo.updateById(inventory._id.toString(), {
+      stock: inventory.stock + updateInventoryDto.stock,
+      price: updateInventoryDto.price,
+    });
+  }
+
+  async createSize(createSizeDto: CreateSizeDto) {
+    const item = await this.merchRepo.findById(createSizeDto._id);
+    if (!item) {
+      this.exceptions.badReqeustException({
+        message: 'Merchandise item not found',
+      });
+    }
+
+    const newSize = await this.inventoryRepo.create({
+      size: createSizeDto.size,
+      stock: 0,
+      price: 0,
+    });
+
+    return await this.merchRepo.updateById(item._id.toString(), {
+      inventory: [...item.inventory, newSize._id],
+    });
   }
 }

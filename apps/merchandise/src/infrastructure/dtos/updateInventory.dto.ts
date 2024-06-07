@@ -7,4 +7,8 @@ export class UpdateInventoryDto {
   @IsNumber()
   @IsPositive()
   stock: number;
+
+  @IsNumber()
+  @IsPositive()
+  price: number;
 }

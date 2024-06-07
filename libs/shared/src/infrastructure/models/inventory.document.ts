@@ -3,14 +3,14 @@ import { AbstractDocument } from '../database/AbstractDocument';
 
 @Schema({ versionKey: false, timestamps: true })
 export class InventoryDocument extends AbstractDocument {
-  @Prop()
+  @Prop({ unique: true })
   size: string;
 
   @Prop()
   stock: number;
 
   @Prop()
-  merchandise: string;
+  price: number;
 }
 
 export const InventorySchema = SchemaFactory.createForClass(InventoryDocument);
