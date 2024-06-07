@@ -11,17 +11,13 @@ import {
 } from '@app/shared/infrastructure/models/merchandise.document';
 import { ExceptionsModule } from '@app/shared/infrastructure/exceptions/exceptions.module';
 import {
-  SizeDocument,
-  SizeDocumentSchema,
-} from '@app/shared/infrastructure/models/size.document';
-import { SizeRepository } from '@app/shared/infrastructure/repositories/size.repository';
-import {
   InventoryDocument,
   InventorySchema,
 } from '@app/shared/infrastructure/models/inventory.document';
 import { InventoryRepository } from '@app/shared/infrastructure/repositories/inventory.respository';
 import { APP_FILTER } from '@nestjs/core';
 import { MongoExceptionsFilter } from '@app/shared/infrastructure/filters/mongoexceptions.filter';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -29,7 +25,6 @@ import { MongoExceptionsFilter } from '@app/shared/infrastructure/filters/mongoe
     DatabaseModule,
     DatabaseModule.forFeature([
       { name: MerchandiseDocument.name, schema: MerchandiseSchema },
-      { name: SizeDocument.name, schema: SizeDocumentSchema },
       { name: InventoryDocument.name, schema: InventorySchema },
     ]),
     ConfigModule.forRoot({
@@ -39,12 +34,12 @@ import { MongoExceptionsFilter } from '@app/shared/infrastructure/filters/mongoe
         DATABASE_URL: Joi.string().required(),
       }),
     }),
+    CategoryModule,
   ],
   controllers: [MerchandiseController],
   providers: [
     MerchandiseService,
     MerchandiseRepository,
-    SizeRepository,
     InventoryRepository,
     { provide: APP_FILTER, useClass: MongoExceptionsFilter },
   ],
