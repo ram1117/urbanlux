@@ -2,6 +2,7 @@ import { AbstractDocument } from '@app/shared/infrastructure/database/AbstractDo
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 import { InventoryDocument } from './inventory.document';
+import { BrandDocument } from './brand.document';
 
 @Schema({ timestamps: true, versionKey: false })
 export class MerchandiseDocument extends AbstractDocument {
@@ -25,6 +26,9 @@ export class MerchandiseDocument extends AbstractDocument {
 
   @Prop()
   brand_code: string;
+
+  @Prop({ type: Types.ObjectId, ref: BrandDocument.name })
+  brand: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: InventoryDocument.name })
   inventory: Types.ObjectId[];

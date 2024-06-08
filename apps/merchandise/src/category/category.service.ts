@@ -13,4 +13,8 @@ export class CategoryService {
   async create(createCategoryDto: CreateCategoryDto) {
     return await this.categoryRepo.create(createCategoryDto);
   }
+
+  async deleteMany() {
+    return await this.categoryRepo.deleteMany();
+  }
 }

@@ -11,6 +11,10 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
     return await this.model.findById(_id).lean<TDocument>(true);
   }
 
+  async findOne(filterQuery: FilterQuery<TDocument>): Promise<TDocument> {
+    return await this.model.findOne(filterQuery);
+  }
+
   async findMany(
     filterQuery: FilterQuery<TDocument> = {},
     sortBy: any = {},
@@ -33,7 +37,7 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
   }
 
   async deleteMany(
-    filterQuery: FilterQuery<TDocument>,
+    filterQuery: FilterQuery<TDocument> = {},
   ): Promise<{ acknowledged: boolean; deletedCount: number }> {
     return await this.model.deleteMany(filterQuery);
   }

@@ -19,14 +19,23 @@ import { APP_FILTER } from '@nestjs/core';
 import { MongoExceptionsFilter } from '@app/shared/infrastructure/filters/mongoexceptions.filter';
 import { CategoryModule } from './category/category.module';
 import { BrandModule } from './brand/brand.module';
+import {
+  BrandDocument,
+  BrandSchema,
+} from '@app/shared/infrastructure/models/brand.document';
+import { BrandRepository } from '@app/shared/infrastructure/repositories/brand.repository';
+import { SeedService } from './seed/seed.service';
+import { LoggerModule } from '@app/shared/infrastructure/logger/logger.module';
 
 @Module({
   imports: [
+    LoggerModule,
     ExceptionsModule,
     DatabaseModule,
     DatabaseModule.forFeature([
       { name: MerchandiseDocument.name, schema: MerchandiseSchema },
       { name: InventoryDocument.name, schema: InventorySchema },
+      { name: BrandDocument.name, schema: BrandSchema },
     ]),
     ConfigModule.forRoot({
       envFilePath: 'apps/merchandise/.env',
@@ -43,7 +52,10 @@ import { BrandModule } from './brand/brand.module';
     MerchandiseService,
     MerchandiseRepository,
     InventoryRepository,
+    BrandRepository,
+    SeedService,
     { provide: APP_FILTER, useClass: MongoExceptionsFilter },
   ],
+  exports: [MerchandiseService],
 })
 export class MerchandiseModule {}

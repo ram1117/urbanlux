@@ -26,5 +26,6 @@ import { BrandRepository } from '@app/shared/infrastructure/repositories/brand.r
     { provide: APP_FILTER, useClass: MongoExceptionsFilter },
     BrandRepository,
   ],
+  exports: [BrandService],
 })
 export class BrandModule {}

@@ -13,4 +13,8 @@ export class BrandService {
   async create(createBrandDto: CreateBrandDto) {
     return await this.brandRepo.create(createBrandDto);
   }
+
+  async deleteMany() {
+    return await this.brandRepo.deleteMany();
+  }
 }

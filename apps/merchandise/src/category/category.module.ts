@@ -10,10 +10,12 @@ import { ExceptionsModule } from '@app/shared/infrastructure/exceptions/exceptio
 import { MongoExceptionsFilter } from '@app/shared/infrastructure/filters/mongoexceptions.filter';
 import { APP_FILTER } from '@nestjs/core';
 import { CategoryRepository } from '@app/shared/infrastructure/repositories/category.repository';
+import { LoggerModule } from '@app/shared/infrastructure/logger/logger.module';
 
 @Module({
   imports: [
     ExceptionsModule,
+    LoggerModule,
     DatabaseModule,
     DatabaseModule.forFeature([
       { name: CategoryDocument.name, schema: CategorySchema },
@@ -25,5 +27,6 @@ import { CategoryRepository } from '@app/shared/infrastructure/repositories/cate
     { provide: APP_FILTER, useClass: MongoExceptionsFilter },
     CategoryRepository,
   ],
+  exports: [CategoryService],
 })
 export class CategoryModule {}

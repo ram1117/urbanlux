@@ -3,7 +3,7 @@ import { AbstractDocument } from '../database/AbstractDocument';
 
 @Schema({ versionKey: false, timestamps: true })
 export class InventoryDocument extends AbstractDocument {
-  @Prop({ unique: true })
+  @Prop()
   size: string;
 
   @Prop()

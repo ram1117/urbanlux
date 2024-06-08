@@ -7,11 +7,15 @@ import {
   ForbiddenException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 
 @Injectable()
 export class ExceptionsService implements IException {
+  notfoundException(data: IFormatExceptionMessage): void {
+    throw new NotFoundException(data);
+  }
   badReqeustException(data: IFormatExceptionMessage): void {
     throw new BadRequestException(data);
   }
