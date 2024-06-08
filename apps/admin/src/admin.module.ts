@@ -1,14 +1,13 @@
 import { Module } from '@nestjs/common';
-import { MerchandiseController } from './merchandise.controller';
-import { MerchandiseService } from './merchandise.service';
+import { AdminController } from './admin.controller';
+import { AdminService } from './admin.service';
+import { LoggerModule } from '@app/shared/infrastructure/logger/logger.module';
+import { ExceptionsModule } from '@app/shared/infrastructure/exceptions/exceptions.module';
 import { DatabaseModule } from '@app/shared/infrastructure/database/database.module';
-import { ConfigModule } from '@nestjs/config';
-import * as Joi from 'joi';
 import {
   MerchandiseDocument,
   MerchandiseSchema,
 } from '@app/shared/infrastructure/models/merchandise.document';
-import { ExceptionsModule } from '@app/shared/infrastructure/exceptions/exceptions.module';
 import {
   InventoryDocument,
   InventorySchema,
@@ -17,14 +16,16 @@ import {
   BrandDocument,
   BrandSchema,
 } from '@app/shared/infrastructure/models/brand.document';
-import { LoggerModule } from '@app/shared/infrastructure/logger/logger.module';
+import { ConfigModule } from '@nestjs/config';
+import * as Joi from 'joi';
 import { MerchandiseRepository } from '@app/shared/infrastructure/repositories/merchandise.repository';
+import { InventoryRepository } from '@app/shared/infrastructure/repositories/inventory.respository';
 import { BrandRepository } from '@app/shared/infrastructure/repositories/brand.repository';
-import { CategoryRepository } from '@app/shared/infrastructure/repositories/category.repository';
-import {
-  CategoryDocument,
-  CategorySchema,
-} from '@app/shared/infrastructure/models/category.document';
+import { APP_FILTER } from '@nestjs/core';
+import { MongoExceptionsFilter } from '@app/shared/infrastructure/filters/mongoexceptions.filter';
+import { CategoryModule } from './category/category.module';
+import { BrandModule } from './brand/brand.module';
+import { SeedService } from './seed/seed.service';
 
 @Module({
   imports: [
@@ -35,7 +36,6 @@ import {
       { name: MerchandiseDocument.name, schema: MerchandiseSchema },
       { name: InventoryDocument.name, schema: InventorySchema },
       { name: BrandDocument.name, schema: BrandSchema },
-      { name: CategoryDocument.name, schema: CategorySchema },
     ]),
     ConfigModule.forRoot({
       envFilePath: 'apps/merchandise/.env',
@@ -44,14 +44,17 @@ import {
         DATABASE_URL: Joi.string().required(),
       }),
     }),
+    CategoryModule,
+    BrandModule,
   ],
-  controllers: [MerchandiseController],
+  controllers: [AdminController],
   providers: [
-    MerchandiseService,
+    AdminService,
     MerchandiseRepository,
+    InventoryRepository,
     BrandRepository,
-    CategoryRepository,
+    SeedService,
+    { provide: APP_FILTER, useClass: MongoExceptionsFilter },
   ],
-  exports: [MerchandiseService],
 })
-export class MerchandiseModule {}
+export class AdminModule {}

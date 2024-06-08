@@ -14,6 +14,19 @@ services:
     volumes:
       - .:/usr/src/app
 
+  admin:
+    build: 
+      context: .
+      dockerfile: ./apps/admin/Dockerfile
+      
+    command: npm run start:dev admin
+    env_file:
+      - ./apps/admin/.env
+    ports:
+      - '3002:3002'
+    volumes:
+      - .:/usr/src/app
+
   mongo:
     container_name: mongodb
     image: mongo:6-jammy
