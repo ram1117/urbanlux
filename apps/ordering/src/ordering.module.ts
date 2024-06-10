@@ -4,11 +4,14 @@ import { OrderingService } from './ordering.service';
 import { DatabaseModule } from '@app/shared/infrastructure/database/database.module';
 import { LoggerModule } from '@app/shared/infrastructure/logger/logger.module';
 import { ExceptionsModule } from '@app/shared/infrastructure/exceptions/exceptions.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import RabbitMQConfig from '@app/shared/infrastructure/config/messagequeue.config';
 import * as Joi from 'joi';
 import { MongoExceptionsFilter } from '@app/shared/infrastructure/filters/mongoexceptions.filter';
 import { APP_FILTER } from '@nestjs/core';
+import { AddressModule } from './address/address.module';
+import { ClientsModule } from '@nestjs/microservices';
+import { SERVICE_NAMES } from '@app/shared/domain/enums';
 
 @Module({
   imports: [
@@ -18,15 +21,23 @@ import { APP_FILTER } from '@nestjs/core';
     ExceptionsModule,
     ConfigModule.forRoot({
       load: [RabbitMQConfig],
-      envFilePath: 'apps/authentication/.env',
+      envFilePath: 'apps/ordering/.env',
       isGlobal: true,
       validationSchema: Joi.object({
         DATABASE_URL: Joi.string().required(),
-        GOOGLE_APPLICATION_CREDENTIALS: Joi.string().required(),
         REDIS_HOST: Joi.string().required(),
         REDIS_PORT: Joi.string().required(),
       }),
     }),
+    ClientsModule.registerAsync([
+      {
+        name: SERVICE_NAMES.AUTH,
+        inject: [ConfigService],
+        useFactory: (configService: ConfigService) =>
+          configService.getOrThrow('authconfig'),
+      },
+    ]),
+    AddressModule,
   ],
   controllers: [OrderingController],
   providers: [
