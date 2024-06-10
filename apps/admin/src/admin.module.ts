@@ -38,7 +38,7 @@ import { SeedService } from './seed/seed.service';
       { name: BrandDocument.name, schema: BrandSchema },
     ]),
     ConfigModule.forRoot({
-      envFilePath: 'apps/merchandise/.env',
+      envFilePath: 'apps/admin/.env',
       isGlobal: true,
       validationSchema: Joi.object({
         DATABASE_URL: Joi.string().required(),
