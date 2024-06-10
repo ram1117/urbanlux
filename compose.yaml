@@ -30,13 +30,26 @@ services:
   authentication:
     build: 
       context: .
-      dockerfile: ./apps/admin/Dockerfile
+      dockerfile: ./apps/authentication/Dockerfile
       
     command: npm run start:dev authentication
     env_file:
       - ./apps/authentication/.env
     ports:
       - '3003:3003'
+    volumes:
+      - .:/usr/src/app
+
+  ordering:
+    build: 
+      context: .
+      dockerfile: ./apps/ordering/Dockerfile
+      
+    command: npm run start:dev ordering
+    env_file:
+      - ./apps/ordering/.env
+    ports:
+      - '3004:3004'
     volumes:
       - .:/usr/src/app
 

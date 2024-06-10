@@ -1,28 +1,19 @@
 import { Module } from '@nestjs/common';
-import { AuthenticationController } from './authentication.controller';
-import { AuthenticationService } from './authentication.service';
+import { OrderingController } from './ordering.controller';
+import { OrderingService } from './ordering.service';
 import { DatabaseModule } from '@app/shared/infrastructure/database/database.module';
 import { LoggerModule } from '@app/shared/infrastructure/logger/logger.module';
 import { ExceptionsModule } from '@app/shared/infrastructure/exceptions/exceptions.module';
 import { ConfigModule } from '@nestjs/config';
-import * as Joi from 'joi';
-import { FirebaseAdmin } from './infrastructure/config/firebase.config';
-import { UserModule } from './user/user.module';
-import {
-  UserDocument,
-  UserSchema,
-} from '@app/shared/infrastructure/models/user.document';
-import { UserRepository } from '@app/shared/infrastructure/repositories/user.repository';
-import { APP_FILTER } from '@nestjs/core';
-import { MongoExceptionsFilter } from '@app/shared/infrastructure/filters/mongoexceptions.filter';
 import RabbitMQConfig from '@app/shared/infrastructure/config/messagequeue.config';
+import * as Joi from 'joi';
+import { MongoExceptionsFilter } from '@app/shared/infrastructure/filters/mongoexceptions.filter';
+import { APP_FILTER } from '@nestjs/core';
 
 @Module({
   imports: [
     DatabaseModule,
-    DatabaseModule.forFeature([
-      { name: UserDocument.name, schema: UserSchema },
-    ]),
+    DatabaseModule.forFeature([]),
     LoggerModule,
     ExceptionsModule,
     ConfigModule.forRoot({
@@ -36,14 +27,11 @@ import RabbitMQConfig from '@app/shared/infrastructure/config/messagequeue.confi
         REDIS_PORT: Joi.string().required(),
       }),
     }),
-    UserModule,
   ],
-  controllers: [AuthenticationController],
+  controllers: [OrderingController],
   providers: [
     { provide: APP_FILTER, useClass: MongoExceptionsFilter },
-    AuthenticationService,
-    FirebaseAdmin,
-    UserRepository,
+    OrderingService,
   ],
 })
-export class AuthenticationModule {}
+export class OrderingModule {}

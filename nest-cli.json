@@ -43,6 +43,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/authentication/tsconfig.app.json"
       }
+    },
+    "ordering": {
+      "type": "application",
+      "root": "apps/ordering",
+      "entryFile": "main",
+      "sourceRoot": "apps/ordering/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/ordering/tsconfig.app.json"
+      }
     }
   },
   "monorepo": true,
