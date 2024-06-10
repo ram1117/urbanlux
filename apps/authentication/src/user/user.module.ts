@@ -13,6 +13,8 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { APP_FILTER } from '@nestjs/core';
 import { MongoExceptionsFilter } from '@app/shared/infrastructure/filters/mongoexceptions.filter';
+import { FirebaseGuard } from '@app/shared/infrastructure/guards/firebase.guard';
+import { FirebaseAdmin } from '../infrastructure/config/firebase.config';
 
 @Module({
   imports: [
@@ -35,6 +37,8 @@ import { MongoExceptionsFilter } from '@app/shared/infrastructure/filters/mongoe
     { provide: APP_FILTER, useClass: MongoExceptionsFilter },
     UserService,
     UserRepository,
+    FirebaseGuard,
+    FirebaseAdmin,
   ],
   exports: [UserService],
 })

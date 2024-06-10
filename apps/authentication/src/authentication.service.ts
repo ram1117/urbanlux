@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserService } from './user/user.service';
 import { SignupUserDto } from './infrastructure/dtos/signupuser.dto';
-import { USER_ROLES } from '@app/shared/domain/constants';
+import { USER_ROLES } from '@app/shared/domain/enums';
 import { FirebaseAdmin } from './infrastructure/config/firebase.config';
 import { ExceptionsService } from '@app/shared/infrastructure/exceptions/exceptions.service';
 
@@ -13,9 +13,8 @@ export class AuthenticationService {
     private readonly exceptions: ExceptionsService,
   ) {}
   async create(signupUserDto: SignupUserDto) {
-    const app = this.firebaseAdmin.setup();
-
     try {
+      const app = this.firebaseAdmin.setup();
       const newUser = await app.auth().createUser({
         email: signupUserDto.email,
         password: signupUserDto.password,

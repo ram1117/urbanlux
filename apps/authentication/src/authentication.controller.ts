@@ -10,7 +10,4 @@ export class AuthenticationController {
   createUser(@Body() signupUserDto: SignupUserDto) {
     return this.authenticationService.create(signupUserDto);
   }
-
-  @Post('signin')
-  signinUser() {}
 }

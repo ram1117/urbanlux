@@ -1,4 +1,4 @@
-import { USER_ROLES } from '@app/shared/domain/constants';
+import { USER_ROLES } from '@app/shared/domain/enums';
 import { IsEmail, IsString } from 'class-validator';
 
 export class CreateUserDto {
