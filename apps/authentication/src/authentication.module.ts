@@ -15,6 +15,7 @@ import {
 import { UserRepository } from '@app/shared/infrastructure/repositories/user.repository';
 import { APP_FILTER } from '@nestjs/core';
 import { MongoExceptionsFilter } from '@app/shared/infrastructure/filters/mongoexceptions.filter';
+import RabbitMQConfig from '@app/shared/infrastructure/config/messagequeue.config';
 
 @Module({
   imports: [
@@ -25,10 +26,12 @@ import { MongoExceptionsFilter } from '@app/shared/infrastructure/filters/mongoe
     LoggerModule,
     ExceptionsModule,
     ConfigModule.forRoot({
+      load: [RabbitMQConfig],
       envFilePath: 'apps/authentication/.env',
       isGlobal: true,
       validationSchema: Joi.object({
         DATABASE_URL: Joi.string().required(),
+        GOOGLE_APPLICATION_CREDENTIALS: Joi.string().required(),
       }),
     }),
     UserModule,

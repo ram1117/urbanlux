@@ -16,7 +16,4 @@ export class CreateUserDto {
 
   @IsString()
   mobile: string;
-
-  @IsString()
-  uid: string;
 }

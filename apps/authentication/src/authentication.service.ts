@@ -15,23 +15,38 @@ export class AuthenticationService {
   async create(signupUserDto: SignupUserDto) {
     try {
       const app = this.firebaseAdmin.setup();
-      const newUser = await app.auth().createUser({
+      await app.auth().createUser({
         email: signupUserDto.email,
         password: signupUserDto.password,
         displayName: `${signupUserDto.firstname} ${signupUserDto.lastname}`,
       });
 
-      await app
-        .auth()
-        .setCustomUserClaims(newUser.uid, { role: USER_ROLES.user });
-
-      return this.userService.create({
+      const user = await this.userService.create({
         ...signupUserDto,
         role: USER_ROLES.user,
-        uid: newUser.uid,
       });
+
+      return user;
     } catch (error) {
       this.exceptions.badReqeustException({ message: error.message });
+    }
+  }
+
+  async authenticate(idToken: string) {
+    const app = this.firebaseAdmin.setup();
+    try {
+      const claims = await app.auth().verifyIdToken(idToken);
+      if (claims) {
+        const user = await this.userService.find({ email: claims.email });
+        return {
+          _id: user._id,
+          email: claims.email,
+          role: user.role,
+        };
+      }
+    } catch (error) {
+      this.exceptions.unauthorizedException({ message: error.message });
+      return null;
     }
   }
 }

@@ -17,9 +17,6 @@ export class UserDocument extends AbstractDocument {
 
   @Prop({ unique: true })
   mobile: string;
-
-  @Prop({ unique: true })
-  uid: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserDocument);
