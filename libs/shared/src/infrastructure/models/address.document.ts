@@ -6,6 +6,9 @@ import { UserDocument } from './user.document';
 @Schema({ timestamps: true, versionKey: false })
 export class AddressDocumet extends AbstractDocument {
   @Prop()
+  fullname: string;
+
+  @Prop()
   label: string;
 
   @Prop()

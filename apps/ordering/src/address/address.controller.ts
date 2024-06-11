@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AddressService } from './address.service';
 import { AuthGuard } from '@app/shared/infrastructure/guards/auth.guard';
 import { CurrentUser } from '@app/shared/infrastructure/decorators/currentuser.decorator';
-import { CreateAddressDto } from '../infrastructure/dtos/createaddress.dto';
+import { CreateAddressDto } from './infrastructure/dtos/createaddress.dto';
 
 @UseGuards(AuthGuard)
 @Controller('address')

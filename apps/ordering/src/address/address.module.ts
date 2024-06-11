@@ -20,6 +20,7 @@ import {
   UserDocument,
   UserSchema,
 } from '@app/shared/infrastructure/models/user.document';
+import { UserRepository } from '@app/shared/infrastructure/repositories/user.repository';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import {
     { provide: APP_FILTER, useClass: MongoExceptionsFilter },
     AddressService,
     AddressRepository,
+    UserRepository,
   ],
 })
 export class AddressModule {}
