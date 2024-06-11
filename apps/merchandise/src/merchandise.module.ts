@@ -4,27 +4,23 @@ import { MerchandiseService } from './merchandise.service';
 import { DatabaseModule } from '@app/shared/infrastructure/database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
-import {
-  MerchandiseDocument,
-  MerchandiseSchema,
-} from '@app/shared/infrastructure/models/merchandise.document';
-import { ExceptionsModule } from '@app/shared/infrastructure/exceptions/exceptions.module';
-import {
-  InventoryDocument,
-  InventorySchema,
-} from '@app/shared/infrastructure/models/inventory.document';
+import { LoggerModule } from '@app/shared/infrastructure/logger/logger.module';
 import {
   BrandDocument,
   BrandSchema,
-} from '@app/shared/infrastructure/models/brand.document';
-import { LoggerModule } from '@app/shared/infrastructure/logger/logger.module';
-import { MerchandiseRepository } from '@app/shared/infrastructure/repositories/merchandise.repository';
-import { BrandRepository } from '@app/shared/infrastructure/repositories/brand.repository';
-import { CategoryRepository } from '@app/shared/infrastructure/repositories/category.repository';
-import {
   CategoryDocument,
   CategorySchema,
-} from '@app/shared/infrastructure/models/category.document';
+  InventoryDocument,
+  InventorySchema,
+  MerchandiseDocument,
+  MerchandiseSchema,
+} from '@app/shared/infrastructure/models';
+import { ExceptionsModule } from '@app/shared/infrastructure/exceptions/exceptions.module';
+import {
+  BrandRepository,
+  CategoryRepository,
+  MerchandiseRepository,
+} from '@app/shared/infrastructure/repositories';
 
 @Module({
   imports: [

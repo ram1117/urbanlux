@@ -15,32 +15,28 @@ import { SERVICE_NAMES } from '@app/shared/domain/enums';
 import {
   OrderDocument,
   OrderSchema,
-} from '@app/shared/infrastructure/models/order.document';
-import {
   OrderItemDocument,
   OrderItemSchema,
-} from '@app/shared/infrastructure/models/orderitem.document';
-import { OrderRepository } from '@app/shared/infrastructure/repositories/order.repository';
-import { OrderItemRepository } from '@app/shared/infrastructure/repositories/orderitem.repository';
-import { MerchandiseRepository } from '@app/shared/infrastructure/repositories/merchandise.repository';
-import {
   MerchandiseDocument,
   MerchandiseSchema,
-} from '@app/shared/infrastructure/models/merchandise.document';
-import {
   InventoryDocument,
   InventorySchema,
-} from '@app/shared/infrastructure/models/inventory.document';
-import {
   BrandDocument,
   BrandSchema,
-} from '@app/shared/infrastructure/models/brand.document';
-import { InventoryRepository } from '@app/shared/infrastructure/repositories/inventory.respository';
-import { AddressRepository } from '@app/shared/infrastructure/repositories/address.repository';
-import {
   AddressDocumet,
   AddressSchema,
-} from '@app/shared/infrastructure/models/address.document';
+  PaymentDocument,
+  PaymentSchema,
+} from '@app/shared/infrastructure/models';
+import { PaymentsService } from './payments.service';
+import {
+  AddressRepository,
+  InventoryRepository,
+  MerchandiseRepository,
+  OrderItemRepository,
+  OrderRepository,
+  PaymentRepository,
+} from '@app/shared/infrastructure/repositories';
 
 @Module({
   imports: [
@@ -52,6 +48,7 @@ import {
       { name: InventoryDocument.name, schema: InventorySchema },
       { name: BrandDocument.name, schema: BrandSchema },
       { name: AddressDocumet.name, schema: AddressSchema },
+      { name: PaymentDocument.name, schema: PaymentSchema },
     ]),
     LoggerModule,
     ExceptionsModule,
@@ -79,11 +76,13 @@ import {
   providers: [
     { provide: APP_FILTER, useClass: MongoExceptionsFilter },
     OrderingService,
+    PaymentsService,
     OrderRepository,
     OrderItemRepository,
     MerchandiseRepository,
     InventoryRepository,
     AddressRepository,
+    PaymentRepository,
   ],
 })
 export class OrderingModule {}
