@@ -6,15 +6,19 @@ import { MerchandiseRepository } from '@app/shared/infrastructure/repositories/m
 import { InventoryRepository } from '@app/shared/infrastructure/repositories/inventory.respository';
 import { ORDER_STATUS, PAYMENT_STATUS } from '@app/shared/domain/enums';
 import { AddressRepository } from '@app/shared/infrastructure/repositories/address.repository';
+import { PaymentsService } from './payments.service';
+import { ExceptionsService } from '@app/shared/infrastructure/exceptions/exceptions.service';
 
 @Injectable()
 export class OrderingService {
   constructor(
+    private readonly exceptions: ExceptionsService,
     private readonly orderRepo: OrderRepository,
     private readonly orderItemRepo: OrderItemRepository,
     private readonly merchRepo: MerchandiseRepository,
     private readonly inventoryRepo: InventoryRepository,
     private readonly addressRepo: AddressRepository,
+    private readonly paymentService: PaymentsService,
   ) {}
 
   async create(createOrderDto: CreateOrderDto, userid: string) {
@@ -38,14 +42,31 @@ export class OrderingService {
         });
       }),
     );
-    const address = await this.addressRepo.findById(createOrderDto.address);
-    return await this.orderRepo.create({
+    const delivery_address = await this.addressRepo.findById(
+      createOrderDto.delivery_address,
+    );
+    const billing_address = await this.addressRepo.findById(
+      createOrderDto.billing_address,
+    );
+    const order = await this.orderRepo.create({
       items: orderitems,
-      address: address,
+      address: delivery_address,
       total,
       payment_status: PAYMENT_STATUS.PENDING,
       user: userid,
     });
+
+    const intent = await this.paymentService.createIntent(
+      order,
+      billing_address,
+    );
+    if (!intent) {
+      this.exceptions.internalServerException({
+        message: 'Unable to create payment intent',
+      });
+    }
+
+    return order;
   }
 
   async findMany(userid: string) {

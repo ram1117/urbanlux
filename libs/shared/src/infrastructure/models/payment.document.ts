@@ -5,10 +5,10 @@ import { OrderDocument } from './order.document';
 
 @Schema()
 export class PaymentDocument extends AbstractDocument {
-  @Prop({ type: Types.ObjectId, ref: OrderDocument.name })
+  @Prop({ type: Types.ObjectId, ref: OrderDocument.name, unique: true })
   order_id: string;
 
-  @Prop()
+  @Prop({ unique: true })
   payment_intent: string;
 }
 

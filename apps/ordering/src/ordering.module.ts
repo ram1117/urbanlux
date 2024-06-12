@@ -60,6 +60,8 @@ import {
         DATABASE_URL: Joi.string().required(),
         REDIS_HOST: Joi.string().required(),
         REDIS_PORT: Joi.string().required(),
+        STRIPE_SECRET_KEY: Joi.string().required(),
+        STRIPE_WEBHOOK_SECRET: Joi.string().required(),
       }),
     }),
     ClientsModule.registerAsync([

@@ -29,5 +29,8 @@ export class CreateOrderDto {
   items: OrderItemsDto[];
 
   @IsString()
-  address: string;
+  delivery_address: string;
+
+  @IsString()
+  billing_address: string;
 }
