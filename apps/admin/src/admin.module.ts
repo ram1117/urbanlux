@@ -27,6 +27,7 @@ import {
   InventoryRepository,
   MerchandiseRepository,
 } from '@app/shared/infrastructure/repositories';
+import { ItemsModule } from './items/items.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import {
     }),
     CategoryModule,
     BrandModule,
+    ItemsModule,
   ],
   controllers: [AdminController],
   providers: [
