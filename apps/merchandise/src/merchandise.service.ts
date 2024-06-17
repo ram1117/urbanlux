@@ -13,8 +13,12 @@ export class MerchandiseService {
     private readonly exceptions: ExceptionsService,
   ) {}
 
-  async findMany() {
-    return await this.merchRepo.findMany();
+  async findMany(brandcode: string = '', categorycode = '') {
+    let query = {};
+    if (brandcode.length > 0) query = { ...query, brand_code: brandcode };
+    if (categorycode.length > 0)
+      query = { ...query, category_code: categorycode };
+    return await this.merchRepo.findManyPopulated(query);
   }
 
   async findById(_id: string) {
@@ -27,7 +31,11 @@ export class MerchandiseService {
   }
 
   async findManyBrand() {
-    return await this.brandRepo.findMany();
+    return await this.brandRepo.findMany({}, { name: 1 });
+  }
+
+  async findManyBrandStore() {
+    return await this.brandRepo.findMany({ create_store: true });
   }
 
   async findManyCategory() {

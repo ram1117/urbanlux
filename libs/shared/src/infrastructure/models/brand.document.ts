@@ -14,6 +14,9 @@ export class BrandDocument extends AbstractDocument {
 
   @Prop()
   logo: string;
+
+  @Prop()
+  create_store: boolean;
 }
 
 export const BrandSchema = SchemaFactory.createForClass(BrandDocument);

@@ -19,10 +19,10 @@ export class CreateItemDto {
   thumbnail: string;
 
   @IsString()
-  category_code: string;
+  brand_id: string;
 
   @IsString()
-  brand_code: string;
+  category_id: string;
 
   @IsArray()
   sizes: string[];

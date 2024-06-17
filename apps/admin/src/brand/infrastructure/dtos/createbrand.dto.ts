@@ -1,3 +1,4 @@
+import { IsBoolean } from '@nestjs/class-validator';
 import { IsString } from 'class-validator';
 
 export class CreateBrandDto {
@@ -12,4 +13,7 @@ export class CreateBrandDto {
 
   @IsString()
   logo: string;
+
+  @IsBoolean()
+  create_store: boolean;
 }

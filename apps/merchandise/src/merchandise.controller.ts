@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { MerchandiseService } from './merchandise.service';
 
 @Controller()
@@ -6,8 +6,8 @@ export class MerchandiseController {
   constructor(private readonly merchandiseService: MerchandiseService) {}
 
   @Get()
-  getItems() {
-    return this.merchandiseService.findMany();
+  getItems(@Query('brandcode') brandcode: string = '') {
+    return this.merchandiseService.findMany(brandcode);
   }
 
   @Get('item/:id')
@@ -18,6 +18,11 @@ export class MerchandiseController {
   @Get('brand')
   getBrands() {
     return this.merchandiseService.findManyBrand();
+  }
+
+  @Get('brandstore')
+  getTopBrands() {
+    return this.merchandiseService.findManyBrandStore();
   }
 
   @Get('category')

@@ -2,28 +2,28 @@ export const DataCategories = [
   {
     name: 'Caps & Hats',
     description: `Discover our wide selection of stylish and comfortable caps and hats. Whether you're looking for a classic baseball cap, a trendy snapback, a cozy knit beanie, or an elegant fedora, we have the perfect accessory to complement your look`,
-    category_code: 'CAT_CAPS',
+    category_code: 'cat_caps',
     thumbnail:
       'https://urbanlux.blob.core.windows.net/urbanluximages/categories/hats.jpg',
   },
   {
     name: 'Sports Jackets',
     description: `Upgrade your athletic wardrobe with our premium sports jackets. Designed for performance and style, our collection features lightweight windbreakers, insulated running jackets, and versatile track jackets`,
-    category_code: 'CAT_JACKETS',
+    category_code: 'cat_jackets',
     thumbnail:
       'https://urbanlux.blob.core.windows.net/urbanluximages/categories/jackets.png',
   },
   {
-    name: 'Jerseys',
-    description: `Our collection includes authentic and replica jerseys for all your favorite sports, crafted from breathable, moisture-wicking fabrics to keep you cool and comfortable. Whether you're cheering from the stands or playing on the field, our jerseys offer the perfect blend of style and performance.`,
-    category_code: 'CAT_JERSEYS',
+    name: 'Sneakers',
+    description: `Step up your style game with our trendy, versatile sneakers that seamlessly blend fashion and function.Discover your perfect fit with our sleek, modern sneakers, ideal for running, training, or everyday wear.`,
+    category_code: '',
     thumbnail:
       'https://urbanlux.blob.core.windows.net/urbanluximages/categories/jersey.jpg',
   },
   {
     name: 'Tracksuits',
     description: ` Perfect for workouts, casual wear, or lounging, our tracksuits are crafted from high-quality, breathable materials that provide maximum flexibility and durability. Featuring coordinated jackets and pants with modern designs, our tracksuits ensure you look and feel great in any setting`,
-    category_code: 'CAT_TRACKS',
+    category_code: 'cat_suits',
     thumbnail:
       'https://urbanlux.blob.core.windows.net/urbanluximages/categories/suits.jpg',
   },
@@ -75,7 +75,7 @@ export const DataMerchandise = [
     ],
     thumbnail:
       'https://urbanlux.blob.core.windows.net/urbanluximages/items/cap1-1.jpg',
-    category_code: 'CAT_CAPS',
+    category_code: 'cat_caps',
     brand_code: 'BRAND_NIKE',
     sizes: ['REGULAR', 'PLUS SIZE'],
   },
@@ -97,7 +97,7 @@ export const DataMerchandise = [
     ],
     thumbnail:
       'https://urbanlux.blob.core.windows.net/urbanluximages/items/cap2-1.jpg',
-    category_code: 'CAT_CAPS',
+    category_code: 'cat_caps',
     brand_code: 'BRAND_NIKE',
     sizes: ['REGULAR', 'PLUS SIZE'],
   },
@@ -119,7 +119,7 @@ export const DataMerchandise = [
     ],
     thumbnail:
       'https://urbanlux.blob.core.windows.net/urbanluximages/items/cap3-1.jpg',
-    category_code: 'CAT_CAPS',
+    category_code: 'cat_caps',
     brand_code: 'BRAND_ADIDAS',
     sizes: ['REGULAR'],
   },
@@ -140,7 +140,7 @@ export const DataMerchandise = [
     ],
     thumbnail:
       'https://urbanlux.blob.core.windows.net/urbanluximages/items/cap4-1.jpg',
-    category_code: 'CAT_CAPS',
+    category_code: 'cat_caps',
     brand_code: 'BRAND_NIKE',
     sizes: ['REGULAR', 'PLUS SIZE'],
   },
@@ -163,7 +163,7 @@ export const DataMerchandise = [
     ],
     thumbnail:
       'https://urbanlux.blob.core.windows.net/urbanluximages/items/cap5-1.jpg',
-    category_code: 'CAT_CAPS',
+    category_code: 'cat_caps',
     brand_code: 'BRAND_PUMA',
     sizes: ['REGULAR', 'PLUS SIZE'],
   },
@@ -187,7 +187,7 @@ export const DataMerchandise = [
     ],
     thumbnail:
       'https://urbanlux.blob.core.windows.net/urbanluximages/items/cap6-4.jpg',
-    category_code: 'CAT_CAPS',
+    category_code: 'cat_caps',
     brand_code: 'BRAND_PUMA',
     sizes: ['REGULAR'],
   },
@@ -210,9 +210,9 @@ export const DataMerchandise = [
     ],
     thumbnail:
       'https://urbanlux.blob.core.windows.net/urbanluximages/items/jersey1-1.jpg',
-    category_code: 'CAT_JERSEYS',
+    category_code: 'cat_sneakers',
     brand_code: 'BRAND_NIKE',
-    sizes: ['XS', 'S', 'M', 'L', '2XL'],
+    sizes: ['8', '9', '10', '11', '12', '9.5', '10.5', '11.5'],
   },
   {
     name: 'Retro Classic Basketball Jersey',
@@ -232,9 +232,9 @@ export const DataMerchandise = [
     ],
     thumbnail:
       'https://urbanlux.blob.core.windows.net/urbanluximages/items/jersey2-1.jpg',
-    category_code: 'CAT_JERSEYS',
+    category_code: 'cat_sneakers',
     brand_code: 'BRAND_PUMA',
-    sizes: ['XS', 'S', 'M', 'L', '2XL'],
+    sizes: ['8', '9', '10', '11', '12', '9.5', '10.5', '11.5'],
   },
   {
     name: 'Ultimate Performance Reversible Jersey',
@@ -254,9 +254,9 @@ export const DataMerchandise = [
     ],
     thumbnail:
       'https://urbanlux.blob.core.windows.net/urbanluximages/items/jersey3-1.jpg',
-    category_code: 'CAT_JERSEYS',
+    category_code: 'cat_sneakers',
     brand_code: 'BRAND_PUMA',
-    sizes: ['XS', 'S', 'M', 'L', '2XL'],
+    sizes: ['8', '9', '10', '11', '12', '9.5', '10.5', '11.5'],
   },
   {
     name: 'Street Baller Sleeveless Jersey',
@@ -276,9 +276,9 @@ export const DataMerchandise = [
     ],
     thumbnail:
       'https://urbanlux.blob.core.windows.net/urbanluximages/items/jersey4-1.jpg',
-    category_code: 'CAT_JERSEYS',
+    category_code: 'cat_sneakers',
     brand_code: 'BRAND_NIKE',
-    sizes: ['XS', 'S', 'M', 'L', '2XL'],
+    sizes: ['8', '9', '10', '11', '12', '9.5', '10.5', '11.5'],
   },
   {
     name: 'Team Spirit Football Jersey',
@@ -299,9 +299,9 @@ export const DataMerchandise = [
     ],
     thumbnail:
       'https://urbanlux.blob.core.windows.net/urbanluximages/items/jersey5-1.jpg',
-    category_code: 'CAT_JERSEYS',
+    category_code: 'cat_sneakers',
     brand_code: 'BRAND_NIKE',
-    sizes: ['XS', 'S', 'M', 'L', '2XL'],
+    sizes: ['8', '9', '10', '11', '12', '9.5', '10.5', '11.5'],
   },
   {
     name: 'SwiftShield Performance Jacket',
@@ -320,7 +320,7 @@ export const DataMerchandise = [
     ],
     thumbnail:
       'https://urbanlux.blob.core.windows.net/urbanluximages/items/coat1-1.jpg',
-    category_code: 'CAT_JACKETS',
+    category_code: 'cat_jackets',
     brand_code: 'BRAND_NIKE',
     sizes: ['XS', 'S', 'M', 'L', '2XL'],
   },
@@ -341,7 +341,7 @@ export const DataMerchandise = [
     ],
     thumbnail:
       'https://urbanlux.blob.core.windows.net/urbanluximages/items/coat2-1.jpg',
-    category_code: 'CAT_JACKETS',
+    category_code: 'cat_jackets',
     brand_code: 'BRAND_ADIDAS',
     sizes: ['XS', 'S', 'M', 'L', '2XL'],
   },
@@ -363,7 +363,7 @@ export const DataMerchandise = [
     ],
     thumbnail:
       'https://urbanlux.blob.core.windows.net/urbanluximages/items/suit1-1.jpg',
-    category_code: 'CAT_TRACKS',
+    category_code: 'cat_suits',
     brand_code: 'BRAND_ADIDAS',
     sizes: ['XS', 'S', 'M', 'L', '2XL'],
   },

@@ -14,6 +14,8 @@ import { SeedService } from './seed/seed.service';
 import {
   BrandDocument,
   BrandSchema,
+  CategoryDocument,
+  CategorySchema,
   InventoryDocument,
   InventorySchema,
   MerchandiseDocument,
@@ -21,6 +23,7 @@ import {
 } from '@app/shared/infrastructure/models';
 import {
   BrandRepository,
+  CategoryRepository,
   InventoryRepository,
   MerchandiseRepository,
 } from '@app/shared/infrastructure/repositories';
@@ -34,6 +37,7 @@ import {
       { name: MerchandiseDocument.name, schema: MerchandiseSchema },
       { name: InventoryDocument.name, schema: InventorySchema },
       { name: BrandDocument.name, schema: BrandSchema },
+      { name: CategoryDocument.name, schema: CategorySchema },
     ]),
     ConfigModule.forRoot({
       envFilePath: 'apps/admin/.env',
@@ -51,6 +55,7 @@ import {
     MerchandiseRepository,
     InventoryRepository,
     BrandRepository,
+    CategoryRepository,
     SeedService,
     { provide: APP_FILTER, useClass: MongoExceptionsFilter },
   ],

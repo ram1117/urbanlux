@@ -1,11 +1,14 @@
 import { ExceptionsService } from '@app/shared/infrastructure/exceptions/exceptions.service';
-import { BrandRepository } from '@app/shared/infrastructure/repositories/brand.repository';
-import { InventoryRepository } from '@app/shared/infrastructure/repositories/inventory.respository';
-import { MerchandiseRepository } from '@app/shared/infrastructure/repositories/merchandise.repository';
 import { Injectable } from '@nestjs/common';
 import { CreateSizeDto } from './infrastructure/dtos/createsize.dto';
 import { UpdateInventoryDto } from './infrastructure/dtos/updateInventory.dto';
 import { CreateItemDto } from './infrastructure/dtos/createitem.dto';
+import {
+  CategoryRepository,
+  BrandRepository,
+  InventoryRepository,
+  MerchandiseRepository,
+} from '@app/shared/infrastructure/repositories';
 
 @Injectable()
 export class AdminService {
@@ -13,6 +16,7 @@ export class AdminService {
     private readonly merchRepo: MerchandiseRepository,
     private readonly inventoryRepo: InventoryRepository,
     private readonly brandRepo: BrandRepository,
+    private readonly categoryRepo: CategoryRepository,
     private readonly exceptions: ExceptionsService,
   ) {}
   async findMany() {
@@ -30,9 +34,10 @@ export class AdminService {
         return item._id;
       }),
     );
-    const brand = await this.brandRepo.findOne({
-      brand_code: createItemDto.brand_code,
-    });
+    const brand = await this.brandRepo.findById(createItemDto.brand_id);
+    const category = await this.categoryRepo.findById(
+      createItemDto.category_id,
+    );
 
     if (!brand) {
       this.exceptions.notfoundException({ message: 'Brand not found' });
@@ -41,7 +46,10 @@ export class AdminService {
     return await this.merchRepo.create({
       ...createItemDto,
       inventory: sizeInventory,
-      brand: brand._id,
+      brand: brand._id.toString(),
+      brand_code: brand.brand_code,
+      category: category._id.toString(),
+      category_code: category.category_code,
     });
   }
 

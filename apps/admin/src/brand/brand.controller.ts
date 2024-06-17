@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { BrandService } from './brand.service';
 import { CreateBrandDto } from './infrastructure/dtos/createbrand.dto';
 
@@ -9,6 +9,19 @@ export class BrandController {
   @Get()
   getBrands() {
     return this.brandService.findMany();
+  }
+
+  @Get(':id')
+  getBrand(@Param('id') id: string) {
+    return this.brandService.findOne(id);
+  }
+
+  @Patch(':id')
+  updateBrand(
+    @Param('id') id: string,
+    @Body() updateBrandDto: Partial<CreateBrandDto>,
+  ) {
+    return this.brandService.updateOne(id, updateBrandDto);
   }
 
   @Post()
