@@ -22,14 +22,8 @@ export class MerchandiseDocument extends AbstractDocument {
   @Prop()
   images: string[];
 
-  @Prop()
-  category_code: string;
-
   @Prop({ type: Types.ObjectId, ref: CategoryDocument.name })
   category: string;
-
-  @Prop()
-  brand_code: string;
 
   @Prop({ type: Types.ObjectId, ref: BrandDocument.name })
   brand: string;

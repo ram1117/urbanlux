@@ -9,6 +9,8 @@ import { ExceptionsService } from '@app/shared/infrastructure/exceptions/excepti
 import { CreateItemDto } from './infrastructure/dtos/createitem.dto';
 import { UpdateInventoryDto } from './infrastructure/dtos/updateInventory.dto';
 import { CreateSizeDto } from './infrastructure/dtos/createsize.dto';
+import { DeleteImageDto } from './infrastructure/dtos/deleteimage.dto';
+import { AddImageDto } from './infrastructure/dtos/addimage.dto';
 
 @Injectable()
 export class ItemsService {
@@ -34,22 +36,22 @@ export class ItemsService {
         return item._id;
       }),
     );
-    const brand = await this.brandRepo.findById(createItemDto.brand_id);
-    const category = await this.categoryRepo.findById(
-      createItemDto.category_id,
-    );
+    const brand = await this.brandRepo.findById(createItemDto.brand);
+    const category = await this.categoryRepo.findById(createItemDto.category);
 
     if (!brand) {
       this.exceptions.notfoundException({ message: 'Brand not found' });
+    }
+
+    if (!category) {
+      this.exceptions.notfoundException({ message: 'Category not found' });
     }
 
     return await this.merchRepo.create({
       ...createItemDto,
       inventory: sizeInventory,
       brand: brand._id.toString(),
-      brand_code: brand.brand_code,
       category: category._id.toString(),
-      category_code: category.category_code,
     });
   }
 
@@ -84,8 +86,8 @@ export class ItemsService {
     return { message: 'Item deleted successfully' };
   }
 
-  async updateInventory(updateInventoryDto: UpdateInventoryDto) {
-    const inventory = await this.inventoryRepo.findById(updateInventoryDto._id);
+  async updateInventory(id: string, updateInventoryDto: UpdateInventoryDto) {
+    const inventory = await this.inventoryRepo.findById(id);
     if (!inventory)
       this.exceptions.notfoundException({
         message: 'Inventory item not found',
@@ -117,5 +119,24 @@ export class ItemsService {
 
   async deleteMany() {
     return await this.merchRepo.deleteMany();
+  }
+
+  async addImage(id: string, addImageDto: AddImageDto) {
+    const item = await this.merchRepo.findById(id);
+    const newImages = [...item.images, addImageDto.image];
+    let updateData: any = { images: newImages };
+    if (addImageDto.thumbnail) {
+      updateData = { ...updateData, thumbnail: addImageDto.thumbnail };
+    }
+
+    return await this.merchRepo.updateById(id, updateData);
+  }
+
+  async deleteImage(id: string, deleteImageDto: DeleteImageDto) {
+    const item = await this.merchRepo.findById(id);
+    const newImages = item.images.filter(
+      (item: string) => item !== deleteImageDto.image,
+    );
+    return await this.merchRepo.updateById(id, { images: newImages });
   }
 }

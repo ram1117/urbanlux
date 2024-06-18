@@ -11,6 +11,8 @@ import { ItemsService } from './items.service';
 import { CreateItemDto } from './infrastructure/dtos/createitem.dto';
 import { CreateSizeDto } from './infrastructure/dtos/createsize.dto';
 import { UpdateInventoryDto } from './infrastructure/dtos/updateInventory.dto';
+import { DeleteImageDto } from './infrastructure/dtos/deleteimage.dto';
+import { AddImageDto } from './infrastructure/dtos/addimage.dto';
 
 @Controller('items')
 export class ItemsController {
@@ -49,8 +51,21 @@ export class ItemsController {
     return this.itemService.deleteById(_id);
   }
 
-  @Patch('inventory')
-  updateInventory(@Body() updateInventoryDto: UpdateInventoryDto) {
-    return this.itemService.updateInventory(updateInventoryDto);
+  @Patch('inventory/:id')
+  updateInventory(
+    @Param('id') id: string,
+    @Body() updateInventoryDto: UpdateInventoryDto,
+  ) {
+    return this.itemService.updateInventory(id, updateInventoryDto);
+  }
+
+  @Patch('image/add/:id')
+  addImage(@Param('id') id: string, @Body() addImageDto: AddImageDto) {
+    return this.itemService.addImage(id, addImageDto);
+  }
+
+  @Patch('image/delete/:id')
+  deleteImage(@Param('id') id: string, @Body() deleteImageDto: DeleteImageDto) {
+    return this.itemService.deleteImage(id, deleteImageDto);
   }
 }
