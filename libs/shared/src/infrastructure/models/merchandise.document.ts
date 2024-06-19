@@ -33,6 +33,9 @@ export class MerchandiseDocument extends AbstractDocument {
 
   @Prop()
   sizes: string[];
+
+  @Prop()
+  color: string;
 }
 
 export const MerchandiseSchema =

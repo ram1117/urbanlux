@@ -21,6 +21,7 @@ import { ItemsModule } from './items/items.module';
       isGlobal: true,
       validationSchema: Joi.object({
         DATABASE_URL: Joi.string().required(),
+        FRONT_END_URL: Joi.string().required(),
       }),
     }),
     CategoryModule,

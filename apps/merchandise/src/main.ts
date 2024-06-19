@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { MerchandiseModule } from './merchandise.module';
 import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(MerchandiseModule);
@@ -12,6 +13,11 @@ async function bootstrap() {
       transformerPackage: require('@nestjs/class-transformer'),
     }),
   );
+  const configService = app.get(ConfigService);
+  app.enableCors({
+    origin: configService.getOrThrow('FRONT_END_URL'),
+    credentials: true,
+  });
   await app.listen(3001);
 }
 bootstrap();

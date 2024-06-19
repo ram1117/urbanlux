@@ -34,6 +34,7 @@ import RabbitMQConfig from '@app/shared/infrastructure/config/messagequeue.confi
         GOOGLE_APPLICATION_CREDENTIALS: Joi.string().required(),
         REDIS_HOST: Joi.string().required(),
         REDIS_PORT: Joi.string().required(),
+        FRONT_END_URL: Joi.string().required(),
       }),
     }),
     UserModule,

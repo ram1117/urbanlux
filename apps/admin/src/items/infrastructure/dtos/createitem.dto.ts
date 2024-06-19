@@ -26,4 +26,7 @@ export class CreateItemDto {
 
   @IsArray()
   sizes: string[];
+
+  @IsString()
+  color: string;
 }

@@ -38,6 +38,7 @@ export class MerchandiseRepository extends AbstractRepository<MerchandiseDocumen
       .findById(_id)
       .populate({ path: 'inventory', model: InventoryDocument.name })
       .populate({ path: 'brand', model: BrandDocument.name })
+      .populate({ path: 'category', model: CategoryDocument.name })
       .lean<MerchandiseDocument>(true);
   }
 }

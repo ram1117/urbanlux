@@ -62,6 +62,7 @@ import {
         REDIS_PORT: Joi.string().required(),
         STRIPE_SECRET_KEY: Joi.string().required(),
         STRIPE_WEBHOOK_SECRET: Joi.string().required(),
+        FRONT_END_URL: Joi.string().required(),
       }),
     }),
     ClientsModule.registerAsync([
