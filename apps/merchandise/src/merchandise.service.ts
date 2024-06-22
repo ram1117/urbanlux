@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ExceptionsService } from '@app/shared/infrastructure/exceptions/exceptions.service';
 import { BrandRepository } from '@app/shared/infrastructure/repositories/brand.repository';
 import { CategoryRepository } from '@app/shared/infrastructure/repositories/category.repository';
+import { FilterBrandDto } from '../infrastructure/dtos/filterbrand.dto';
 
 @Injectable()
 export class MerchandiseService {
@@ -13,12 +14,32 @@ export class MerchandiseService {
     private readonly exceptions: ExceptionsService,
   ) {}
 
-  async findMany(brandcode: string = '', categorycode = '') {
+  async findMany(brandid: string | undefined, categoryid: string | undefined) {
     let query = {};
-    if (brandcode.length > 0) query = { ...query, brand_code: brandcode };
-    if (categorycode.length > 0)
-      query = { ...query, category_code: categorycode };
+    if (brandid) query = { ...query, brand: brandid };
+    if (categoryid) query = { ...query, category: categoryid };
     return await this.merchRepo.findManyPopulated(query);
+  }
+
+  async findFilteredBrand(id: string, filterBrandDto: FilterBrandDto) {
+    let query: any = { brand: id };
+    if (filterBrandDto.fromprice && filterBrandDto.toprice) {
+      query = {
+        ...query,
+        base_price: {
+          $gte: filterBrandDto.fromprice,
+          $lte: filterBrandDto.toprice,
+        },
+      };
+    }
+    if (filterBrandDto.categories) {
+      query = { ...query, category: { $in: filterBrandDto.categories } };
+    }
+    return await this.merchRepo.findManyPopulated(query);
+  }
+
+  async findManyLatest() {
+    return await this.merchRepo.findManyPopulatedLimit();
   }
 
   async findById(_id: string) {
@@ -34,7 +55,7 @@ export class MerchandiseService {
     return await this.brandRepo.findMany({}, { name: 1 });
   }
 
-  async findManyBrandStore() {
+  async findManyTopBrands() {
     return await this.brandRepo.findMany({ create_store: true });
   }
 

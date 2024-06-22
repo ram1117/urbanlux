@@ -14,7 +14,6 @@ export class UserController {
   @Roles([USER_ROLES.admin, USER_ROLES.user])
   @UseGuards(AuthGuard, RolesGuard)
   getUser(@CurrentUser() user: any) {
-    console.log(user._id);
     return this.userService.find({ _id: user._id });
   }
 }

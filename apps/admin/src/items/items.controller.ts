@@ -36,9 +36,9 @@ export class ItemsController {
     return this.itemService.updateById(_id, updateItemDto);
   }
 
-  @Post('size')
-  addSize(@Body() createSizeDto: CreateSizeDto) {
-    return this.itemService.createSize(createSizeDto);
+  @Post('size/:id')
+  addSize(@Body() createSizeDto: CreateSizeDto, @Param('id') id: string) {
+    return this.itemService.createSize(id, createSizeDto);
   }
 
   @Post('create')

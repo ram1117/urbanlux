@@ -34,6 +34,7 @@ export class OrderingService {
 
         return await this.orderItemRepo.create({
           ...item,
+          size: inventory.size,
           subtotal,
           status: ORDER_STATUS.PLACED,
           user: userid,

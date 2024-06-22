@@ -36,6 +36,9 @@ export class MerchandiseDocument extends AbstractDocument {
 
   @Prop()
   color: string;
+
+  @Prop()
+  base_price: number;
 }
 
 export const MerchandiseSchema =

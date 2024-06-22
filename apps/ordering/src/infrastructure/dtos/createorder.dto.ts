@@ -17,9 +17,6 @@ class OrderItemsDto {
   @IsNumber()
   @Min(1)
   quantity: number;
-
-  @IsString()
-  size: string;
 }
 
 export class CreateOrderDto {

@@ -52,6 +52,7 @@ export class ItemsService {
       inventory: sizeInventory,
       brand: brand._id.toString(),
       category: category._id.toString(),
+      base_price: 0,
     });
   }
 
@@ -92,14 +93,22 @@ export class ItemsService {
       this.exceptions.notfoundException({
         message: 'Inventory item not found',
       });
+    const item = await this.merchRepo.findById(
+      updateInventoryDto.merchandiseId,
+    );
+    if (item.base_price === 0 || updateInventoryDto.price < item.base_price) {
+      await this.merchRepo.updateById(item._id.toString(), {
+        base_price: updateInventoryDto.price,
+      });
+    }
     return await this.inventoryRepo.updateById(inventory._id.toString(), {
       stock: inventory.stock + updateInventoryDto.stock,
       price: updateInventoryDto.price,
     });
   }
 
-  async createSize(createSizeDto: CreateSizeDto) {
-    const item = await this.merchRepo.findById(createSizeDto._id);
+  async createSize(id: string, createSizeDto: CreateSizeDto) {
+    const item = await this.merchRepo.findById(id);
     if (!item) {
       this.exceptions.notfoundException({
         message: 'Merchandise item not found',
@@ -114,6 +123,7 @@ export class ItemsService {
 
     return await this.merchRepo.updateById(item._id.toString(), {
       inventory: [...item.inventory, newSize._id],
+      sizes: [...item.sizes, createSizeDto.size],
     });
   }
 

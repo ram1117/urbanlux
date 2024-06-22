@@ -33,12 +33,24 @@ export class MerchandiseRepository extends AbstractRepository<MerchandiseDocumen
       .lean<MerchandiseDocument[]>(true);
   }
 
+  async findManyPopulatedLimit(sortBy: any = { createdAt: 'descending' }) {
+    return await this.merchandiseModel
+      .find({}, { name: 1, brand: 1, thumbnail: 1, createdAt: 1 }, { limit: 5 })
+      .sort(sortBy)
+      .populate({ path: 'brand', model: BrandDocument.name, select: 'name' })
+      .lean<MerchandiseDocument[]>(true);
+  }
+
   async findOnePopulated(_id: string) {
     return await this.merchandiseModel
       .findById(_id)
       .populate({ path: 'inventory', model: InventoryDocument.name })
-      .populate({ path: 'brand', model: BrandDocument.name })
-      .populate({ path: 'category', model: CategoryDocument.name })
+      .populate({ path: 'brand', model: BrandDocument.name, select: 'name' })
+      .populate({
+        path: 'category',
+        model: CategoryDocument.name,
+        select: 'name',
+      })
       .lean<MerchandiseDocument>(true);
   }
 }
