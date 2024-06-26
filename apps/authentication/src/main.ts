@@ -15,6 +15,10 @@ async function bootstrap() {
       transformerPackage: require('@nestjs/class-transformer'),
     }),
   );
+  app.enableCors({
+    origin: configService.getOrThrow('FRONT_END_URL'),
+    credentials: true,
+  });
   app.startAllMicroservices();
   await app.listen(3003);
 }

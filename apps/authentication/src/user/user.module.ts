@@ -29,6 +29,7 @@ import { SERVICE_NAMES } from '@app/shared/domain/enums';
       isGlobal: true,
       validationSchema: Joi.object({
         DATABASE_URL: Joi.string().required(),
+        FRONT_END_URL: Joi.string().required(),
       }),
     }),
     ClientsModule.registerAsync([

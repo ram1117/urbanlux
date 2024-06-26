@@ -19,7 +19,7 @@ RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=cache,target=/root/.npm \
     npm ci
 COPY . .
-RUN npm run build authentication
+RUN npm run build ordering
 
 FROM base as final
 ENV NODE_ENV production
@@ -27,4 +27,4 @@ COPY package.json .
 COPY --from=deps /usr/src/app/node_modules ./node_modules
 COPY --from=build /usr/src/app/. ./.
 EXPOSE 3003
-CMD ["node","dist/apps/authentication/main"]
+CMD ["node","dist/apps/ordering/main"]

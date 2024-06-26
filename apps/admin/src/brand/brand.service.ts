@@ -10,6 +10,14 @@ export class BrandService {
     return await this.brandRepo.findMany();
   }
 
+  async findOne(id: string) {
+    return await this.brandRepo.findById(id);
+  }
+
+  async updateOne(id: string, updateBrandDto: Partial<CreateBrandDto>) {
+    return await this.brandRepo.updateById(id, updateBrandDto);
+  }
+
   async create(createBrandDto: CreateBrandDto) {
     return await this.brandRepo.create(createBrandDto);
   }

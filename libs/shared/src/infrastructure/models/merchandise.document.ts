@@ -3,6 +3,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 import { InventoryDocument } from './inventory.document';
 import { BrandDocument } from './brand.document';
+import { CategoryDocument } from './category.document';
 
 @Schema({ timestamps: true, versionKey: false })
 export class MerchandiseDocument extends AbstractDocument {
@@ -21,17 +22,23 @@ export class MerchandiseDocument extends AbstractDocument {
   @Prop()
   images: string[];
 
-  @Prop()
-  category_code: string;
-
-  @Prop()
-  brand_code: string;
+  @Prop({ type: Types.ObjectId, ref: CategoryDocument.name })
+  category: string;
 
   @Prop({ type: Types.ObjectId, ref: BrandDocument.name })
-  brand: Types.ObjectId;
+  brand: string;
 
   @Prop({ type: Types.ObjectId, ref: InventoryDocument.name })
   inventory: Types.ObjectId[];
+
+  @Prop()
+  sizes: string[];
+
+  @Prop()
+  color: string;
+
+  @Prop()
+  base_price: number;
 }
 
 export const MerchandiseSchema =
