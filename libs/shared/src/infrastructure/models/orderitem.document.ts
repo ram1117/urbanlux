@@ -25,9 +25,6 @@ export class OrderItemDocument extends AbstractDocument {
   @Prop()
   subtotal: number;
 
-  @Prop()
-  status: string;
-
   @Prop({ type: Types.ObjectId, ref: UserDocument.name })
   user: string;
 

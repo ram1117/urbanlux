@@ -19,6 +19,9 @@ export class OrderDocument extends AbstractDocument {
   @Prop()
   payment_status: string;
 
+  @Prop()
+  order_status: string;
+
   @Prop({ type: Types.ObjectId, ref: UserDocument.name })
   user: string;
 

@@ -1,4 +1,4 @@
-import { PAYMENT_STATUS } from '@app/shared/domain/enums';
+import { ORDER_STATUS, PAYMENT_STATUS } from '@app/shared/domain/enums';
 import { ExceptionsService } from '@app/shared/infrastructure/exceptions/exceptions.service';
 import {
   AddressDocumet,
@@ -93,6 +93,7 @@ export class PaymentsService {
     return await this.orderRepo.updateById(payment.order_id, {
       cancelled: true,
       payment_status: PAYMENT_STATUS.REFUNDINITIATED,
+      order_status: ORDER_STATUS.CANCELLED,
     });
   }
 

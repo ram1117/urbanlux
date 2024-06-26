@@ -36,7 +36,6 @@ export class OrderingService {
           ...item,
           size: inventory.size,
           subtotal,
-          status: ORDER_STATUS.PLACED,
           user: userid,
           merchandise: merchandise._id.toString(),
           merchandise_name: merchandise.name,
@@ -56,6 +55,7 @@ export class OrderingService {
       address: delivery_address,
       total,
       payment_status: PAYMENT_STATUS.PENDING,
+      order_status: ORDER_STATUS.PLACED,
       user: userid,
       cancelled: false,
     });

@@ -17,8 +17,8 @@ export enum SERVICE_PATTERNS {
 
 export enum ORDER_STATUS {
   PLACED = 'placed',
-  FULFILLED = 'fulfilled',
   CANCELLED = 'cancelled',
+  FULFILLED = 'fulfilled',
   NOTFULFILLED = 'not fulfilled',
 }
 
