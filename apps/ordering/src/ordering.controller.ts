@@ -45,9 +45,9 @@ export class OrderingController {
     return this.orderingService.findOne(user._id, _id);
   }
 
-  @Patch(':id')
-  cancelOrder(@Param('id') orderItemId: string) {
-    return this.orderingService.updateOne(orderItemId);
+  @Patch('cancel/:id')
+  cancelOrder(@Param('id') orderid: string) {
+    return this.paymentService.createRefund(orderid);
   }
 
   @Get('payment/:id')
@@ -55,8 +55,14 @@ export class OrderingController {
     return this.paymentService.findSecret(orderid);
   }
 
+  @Post('payment/:id')
+  updatePaymentStatus(@Param('id') intentid: string) {
+    console.log(intentid);
+    return this.paymentService.updatePaymentStatus(intentid);
+  }
+
   @Post('payment/webhook')
-  handleHook(
+  async handleHook(
     @Headers('stripe-signature') signature: string,
     @Req() request: RequestWithRawBody,
   ) {
@@ -65,7 +71,10 @@ export class OrderingController {
         message: 'Missing stripe signature header',
       });
     }
-    this.paymentService.handleHookEvent(signature, request.rawBody);
-    return { status: HttpStatus.OK };
+    const success = await this.paymentService.handleHookEvent(
+      signature,
+      request.rawBody,
+    );
+    if (success) return { status: HttpStatus.OK };
   }
 }

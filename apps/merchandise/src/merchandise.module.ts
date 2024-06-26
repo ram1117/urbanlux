@@ -19,6 +19,7 @@ import { ExceptionsModule } from '@app/shared/infrastructure/exceptions/exceptio
 import {
   BrandRepository,
   CategoryRepository,
+  InventoryRepository,
   MerchandiseRepository,
 } from '@app/shared/infrastructure/repositories';
 
@@ -47,6 +48,7 @@ import {
     MerchandiseService,
     MerchandiseRepository,
     BrandRepository,
+    InventoryRepository,
     CategoryRepository,
   ],
   exports: [MerchandiseService],

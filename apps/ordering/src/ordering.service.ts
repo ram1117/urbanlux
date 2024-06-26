@@ -28,7 +28,7 @@ export class OrderingService {
         const merchandise = await this.merchRepo.findOnePopulated(
           item.merchandise,
         );
-        const inventory = await this.inventoryRepo.findById(item.inventory_id);
+        const inventory = await this.inventoryRepo.findById(item.inventory);
         const subtotal = item.quantity * inventory.price;
         total += subtotal;
 
@@ -39,6 +39,8 @@ export class OrderingService {
           status: ORDER_STATUS.PLACED,
           user: userid,
           merchandise: merchandise._id.toString(),
+          merchandise_name: merchandise.name,
+          merchandise_thumbnail: merchandise.thumbnail,
           inventory: inventory._id.toString(),
         });
       }),
@@ -55,6 +57,7 @@ export class OrderingService {
       total,
       payment_status: PAYMENT_STATUS.PENDING,
       user: userid,
+      cancelled: false,
     });
 
     const intent = await this.paymentService.createIntent(
@@ -71,16 +74,10 @@ export class OrderingService {
   }
 
   async findMany(userid: string) {
-    return await this.orderRepo.findMany({ user: userid });
+    return await this.orderRepo.findManyPopulated({ user: userid });
   }
 
   async findOne(userid: string, _id: string) {
     return await this.orderRepo.findOne({ user: userid, _id });
-  }
-
-  async updateOne(orderItemId: string) {
-    return await this.orderItemRepo.updateById(orderItemId, {
-      status: ORDER_STATUS.CANCELLED,
-    });
   }
 }

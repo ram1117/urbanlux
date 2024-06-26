@@ -21,6 +21,9 @@ export class OrderDocument extends AbstractDocument {
 
   @Prop({ type: Types.ObjectId, ref: UserDocument.name })
   user: string;
+
+  @Prop()
+  cancelled: boolean;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(OrderDocument);

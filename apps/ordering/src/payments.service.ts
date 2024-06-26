@@ -37,10 +37,14 @@ export class PaymentsService {
           postal_code: address.postal_code,
           state: address.state,
           country: address.country,
+          city: address.city,
         },
       },
       amount: order.total * 100,
       currency: 'usd',
+      confirm: true,
+      payment_method: 'pm_card_visa',
+      setup_future_usage: 'off_session',
       automatic_payment_methods: {
         enabled: true,
         allow_redirects: 'never',
@@ -55,6 +59,7 @@ export class PaymentsService {
     return await this.paymentRepo.create({
       order_id: order._id.toString(),
       payment_intent: payment_intent.id,
+      refund_id: null,
     });
   }
 
@@ -64,6 +69,31 @@ export class PaymentsService {
     const order = await this.orderRepo.findById(orderid);
     const intent = await this.stripeClient.paymentIntents.retrieve(intent_id);
     return { secret: intent.client_secret, order };
+  }
+
+  async updatePaymentStatus(payment_intent: string) {
+    const order_id = (await this.paymentRepo.findOne({ payment_intent }))
+      .order_id;
+    await this.orderRepo.updateById(order_id, {
+      payment_status: PAYMENT_STATUS.COMPLETE,
+    });
+    return { message: 'payment updated.' };
+  }
+
+  async createRefund(order_id: string) {
+    const payment = await this.paymentRepo.findOne({ order_id });
+    const { id } = await this.stripeClient.refunds.create({
+      payment_intent: payment.payment_intent,
+      reason: 'requested_by_customer',
+    });
+
+    await this.paymentRepo.updateById(payment._id.toString(), {
+      refund_id: id,
+    });
+    return await this.orderRepo.updateById(payment.order_id, {
+      cancelled: true,
+      payment_status: PAYMENT_STATUS.REFUNDINITIATED,
+    });
   }
 
   async handleHookEvent(signature: string, payload: Buffer) {
@@ -91,5 +121,6 @@ export class PaymentsService {
         });
       }
     }
+    return true;
   }
 }

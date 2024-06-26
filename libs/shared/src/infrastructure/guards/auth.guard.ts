@@ -18,7 +18,8 @@ export class AuthGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const tokenId = context.getArgs()[0]?.headers?.authorization;
+    const request = context.switchToHttp().getRequest();
+    const tokenId = request.headers.authorization;
 
     if (!tokenId)
       this.exceptions.unauthorizedException({ message: 'Please login' });

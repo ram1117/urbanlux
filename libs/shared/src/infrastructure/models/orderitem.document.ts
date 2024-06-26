@@ -11,6 +11,12 @@ export class OrderItemDocument extends AbstractDocument {
   merchandise: string;
 
   @Prop()
+  merchandise_name: string;
+
+  @Prop()
+  merchandise_thumbnail: string;
+
+  @Prop()
   quantity: number;
 
   @Prop()

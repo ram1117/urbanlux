@@ -12,7 +12,7 @@ class OrderItemsDto {
   merchandise: string;
 
   @IsString()
-  inventory_id: string;
+  inventory: string;
 
   @IsNumber()
   @Min(1)

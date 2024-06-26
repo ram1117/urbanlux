@@ -1,3 +1,4 @@
+import { ADDRESS_TYPE } from '@app/shared/domain/enums';
 import { IsPostalCode, IsString } from '@nestjs/class-validator';
 
 export class CreateAddressDto {
@@ -21,4 +22,7 @@ export class CreateAddressDto {
 
   @IsString()
   country: string;
+
+  @IsString()
+  address_type: ADDRESS_TYPE;
 }

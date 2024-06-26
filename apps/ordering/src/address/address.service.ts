@@ -2,6 +2,7 @@ import { AddressRepository } from '@app/shared/infrastructure/repositories/addre
 import { Injectable } from '@nestjs/common';
 import { CreateAddressDto } from './infrastructure/dtos/createaddress.dto';
 import { UserRepository } from '@app/shared/infrastructure/repositories/user.repository';
+import { ADDRESS_TYPE } from '@app/shared/domain/enums';
 
 @Injectable()
 export class AddressService {
@@ -11,7 +12,15 @@ export class AddressService {
   ) {}
 
   async findMany(userid: string) {
-    return await this.addressRepository.findManyPopulated({ user: userid });
+    const delivery = await this.addressRepository.findManyPopulated({
+      user: userid,
+      address_type: ADDRESS_TYPE.DELIVERY,
+    });
+    const billing = await this.addressRepository.findManyPopulated({
+      user: userid,
+      address_type: ADDRESS_TYPE.BILLING,
+    });
+    return { delivery, billing };
   }
 
   async findOne(_id: string) {

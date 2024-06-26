@@ -10,6 +10,9 @@ export class PaymentDocument extends AbstractDocument {
 
   @Prop({ unique: true })
   payment_intent: string;
+
+  @Prop({ unique: true })
+  refund_id: string;
 }
 
 export const PaymentSchema = SchemaFactory.createForClass(PaymentDocument);

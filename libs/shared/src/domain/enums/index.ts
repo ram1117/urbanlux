@@ -24,5 +24,26 @@ export enum ORDER_STATUS {
 
 export enum PAYMENT_STATUS {
   PENDING = 'pending',
+  CONFIRMATION = 'waiting confirmation',
   COMPLETE = 'complete',
+  REFUNDINITIATED = 'refund initiated',
+  REFUNDCOMPLETE = 'refund completed',
+}
+
+export enum SORT_VALUES {
+  ALPHASC = 'alphasc',
+  ALPHDSC = 'alphdsc',
+  PRICEASC = 'priceasc',
+  PRICEDSC = 'pricedsc',
+  DATEDSC = 'datadsc',
+}
+
+export enum CHARGES {
+  SHIPPING = 10,
+  TAX = 0.08,
+}
+
+export enum ADDRESS_TYPE {
+  DELIVERY = 'delivery',
+  BILLING = 'billing',
 }

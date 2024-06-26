@@ -27,6 +27,8 @@ import {
   AddressSchema,
   PaymentDocument,
   PaymentSchema,
+  CategoryDocument,
+  CategorySchema,
 } from '@app/shared/infrastructure/models';
 import { PaymentsService } from './payments.service';
 import {
@@ -49,6 +51,7 @@ import {
       { name: BrandDocument.name, schema: BrandSchema },
       { name: AddressDocumet.name, schema: AddressSchema },
       { name: PaymentDocument.name, schema: PaymentSchema },
+      { name: CategoryDocument.name, schema: CategorySchema },
     ]),
     LoggerModule,
     ExceptionsModule,

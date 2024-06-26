@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { MerchandiseService } from './merchandise.service';
-import { FilterBrandDto } from '../infrastructure/dtos/filterbrand.dto';
+import { FilterItemsDto } from '../infrastructure/dtos/filteritems.dto';
+import { GetInventoryDto } from '../infrastructure/dtos/getinventory.dto';
 
 @Controller()
 export class MerchandiseController {
@@ -46,11 +47,14 @@ export class MerchandiseController {
     return { brands, categories };
   }
 
-  @Post('filterbrands/:id')
-  async getFilteredItems(
-    @Body() filterBrandDto: FilterBrandDto,
-    @Param('id') id: string,
-  ) {
-    return this.merchandiseService.findFilteredBrand(id, filterBrandDto);
+  @Post('filteritems')
+  async getFilteredItems(@Body() filterItemsDto: FilterItemsDto) {
+    return this.merchandiseService.findFilteredBrand(filterItemsDto);
+  }
+
+  @Post('inventory')
+  async getInventory(@Body() getInventoryDto: GetInventoryDto) {
+    console.log(getInventoryDto);
+    return this.merchandiseService.findManyInventory(getInventoryDto);
   }
 }

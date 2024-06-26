@@ -29,6 +29,9 @@ export class AddressDocumet extends AbstractDocument {
   @Prop()
   country: string;
 
+  @Prop()
+  address_type: string;
+
   @Prop({ type: Types.ObjectId, ref: UserDocument.name })
   user: string;
 }
