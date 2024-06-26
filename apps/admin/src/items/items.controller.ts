@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ItemsService } from './items.service';
 import { CreateItemDto } from './infrastructure/dtos/createitem.dto';
@@ -13,7 +14,13 @@ import { CreateSizeDto } from './infrastructure/dtos/createsize.dto';
 import { UpdateInventoryDto } from './infrastructure/dtos/updateInventory.dto';
 import { DeleteImageDto } from './infrastructure/dtos/deleteimage.dto';
 import { AddImageDto } from './infrastructure/dtos/addimage.dto';
+import { Roles } from '@app/shared/infrastructure/decorators/roles.decorator';
+import { USER_ROLES } from '@app/shared/domain/enums';
+import { AuthGuard } from '@app/shared/infrastructure/guards/auth.guard';
+import { RolesGuard } from '@app/shared/infrastructure/guards/roles.guard';
 
+@Roles([USER_ROLES.admin])
+@UseGuards(AuthGuard, RolesGuard)
 @Controller('items')
 export class ItemsController {
   constructor(private readonly itemService: ItemsService) {}

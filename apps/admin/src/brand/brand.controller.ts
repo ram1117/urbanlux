@@ -1,7 +1,21 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { BrandService } from './brand.service';
 import { CreateBrandDto } from './infrastructure/dtos/createbrand.dto';
+import { Roles } from '@app/shared/infrastructure/decorators/roles.decorator';
+import { USER_ROLES } from '@app/shared/domain/enums';
+import { AuthGuard } from '@app/shared/infrastructure/guards/auth.guard';
+import { RolesGuard } from '@app/shared/infrastructure/guards/roles.guard';
 
+@Roles([USER_ROLES.admin])
+@UseGuards(AuthGuard, RolesGuard)
 @Controller('brands')
 export class BrandController {
   constructor(private readonly brandService: BrandService) {}
