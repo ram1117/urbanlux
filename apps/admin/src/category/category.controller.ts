@@ -20,21 +20,25 @@ import { RolesGuard } from '@app/shared/infrastructure/guards/roles.guard';
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
+  @Roles([USER_ROLES.admin])
   @Get()
   getCategories() {
     return this.categoryService.findMany();
   }
 
+  @Roles([USER_ROLES.admin])
   @Get(':id')
   getCategory(@Param('id') _id: string) {
     return this.categoryService.findById(_id);
   }
 
+  @Roles([USER_ROLES.admin])
   @Post()
   createCategory(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoryService.create(createCategoryDto);
   }
 
+  @Roles([USER_ROLES.admin])
   @Patch(':id')
   updateCategory(
     @Body() updateCategortDto: Partial<CreateCategoryDto>,

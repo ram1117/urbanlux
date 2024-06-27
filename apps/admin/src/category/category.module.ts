@@ -6,19 +6,31 @@ import {
   CategoryDocument,
   CategorySchema,
 } from '@app/shared/infrastructure/models/category.document';
-import { ExceptionsModule } from '@app/shared/infrastructure/exceptions/exceptions.module';
 import { MongoExceptionsFilter } from '@app/shared/infrastructure/filters/mongoexceptions.filter';
 import { APP_FILTER } from '@nestjs/core';
 import { CategoryRepository } from '@app/shared/infrastructure/repositories/category.repository';
 import { LoggerModule } from '@app/shared/infrastructure/logger/logger.module';
+import { ExceptionsModule } from '@app/shared/infrastructure/exceptions/exceptions.module';
+import { ClientsModule } from '@nestjs/microservices';
+import { SERVICE_NAMES } from '@app/shared/domain/enums';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
+    LoggerModule,
     ExceptionsModule,
     LoggerModule,
     DatabaseModule,
     DatabaseModule.forFeature([
       { name: CategoryDocument.name, schema: CategorySchema },
+    ]),
+    ClientsModule.registerAsync([
+      {
+        name: SERVICE_NAMES.AUTH,
+        inject: [ConfigService],
+        useFactory: (configService: ConfigService) =>
+          configService.getOrThrow('authconfig'),
+      },
     ]),
   ],
   controllers: [CategoryController],

@@ -46,5 +46,6 @@ import RabbitMQConfig from '@app/shared/infrastructure/config/messagequeue.confi
     FirebaseAdmin,
     UserRepository,
   ],
+  exports: [],
 })
 export class AuthenticationModule {}
