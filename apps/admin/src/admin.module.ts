@@ -11,6 +11,7 @@ import { BrandModule } from './brand/brand.module';
 import { ItemsModule } from './items/items.module';
 import { ClientsModule } from '@nestjs/microservices';
 import { SERVICE_NAMES } from '@app/shared/domain/enums';
+import { OrdersModule } from './orders/orders.module';
 import RabbitMQConfig from '@app/shared/infrastructure/config/messagequeue.config';
 
 @Module({
@@ -39,6 +40,7 @@ import RabbitMQConfig from '@app/shared/infrastructure/config/messagequeue.confi
     CategoryModule,
     BrandModule,
     ItemsModule,
+    OrdersModule,
   ],
   controllers: [AdminController],
   providers: [AdminService],

@@ -1,38 +1,36 @@
 import { Module } from '@nestjs/common';
-import { ItemsController } from './items.controller';
-import { ItemsService } from './items.service';
-import * as Joi from 'joi';
+import { OrdersController } from './orders.controller';
+import { OrdersService } from './orders.service';
+import { DatabaseModule } from '@app/shared/infrastructure/database/database.module';
 import {
-  BrandDocument,
-  BrandSchema,
-  CategoryDocument,
-  CategorySchema,
   InventoryDocument,
   InventorySchema,
-  MerchandiseDocument,
-  MerchandiseSchema,
+  OrderDocument,
+  OrderItemDocument,
+  OrderItemSchema,
+  OrderSchema,
+  UserDocument,
+  UserSchema,
 } from '@app/shared/infrastructure/models';
-import {
-  BrandRepository,
-  CategoryRepository,
-  InventoryRepository,
-  MerchandiseRepository,
-} from '@app/shared/infrastructure/repositories';
-
-import { DatabaseModule } from '@app/shared/infrastructure/database/database.module';
+import { ClientsModule } from '@nestjs/microservices';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import * as Joi from 'joi';
+import { SERVICE_NAMES } from '@app/shared/domain/enums';
 import { APP_FILTER } from '@nestjs/core';
 import { MongoExceptionsFilter } from '@app/shared/infrastructure/filters/mongoexceptions.filter';
-import { ClientsModule } from '@nestjs/microservices';
-import { SERVICE_NAMES } from '@app/shared/domain/enums';
+import {
+  InventoryRepository,
+  OrderItemRepository,
+  OrderRepository,
+} from '@app/shared/infrastructure/repositories';
 
 @Module({
   imports: [
     DatabaseModule.forFeature([
-      { name: MerchandiseDocument.name, schema: MerchandiseSchema },
+      { name: OrderDocument.name, schema: OrderSchema },
+      { name: OrderItemDocument.name, schema: OrderItemSchema },
       { name: InventoryDocument.name, schema: InventorySchema },
-      { name: BrandDocument.name, schema: BrandSchema },
-      { name: CategoryDocument.name, schema: CategorySchema },
+      { name: UserDocument.name, schema: UserSchema },
     ]),
     ConfigModule.forRoot({
       envFilePath: 'apps/admin/.env',
@@ -50,14 +48,13 @@ import { SERVICE_NAMES } from '@app/shared/domain/enums';
       },
     ]),
   ],
-  controllers: [ItemsController],
+  controllers: [OrdersController],
   providers: [
-    ItemsService,
-    MerchandiseRepository,
-    InventoryRepository,
-    BrandRepository,
-    CategoryRepository,
+    OrdersService,
     { provide: APP_FILTER, useClass: MongoExceptionsFilter },
+    OrderRepository,
+    OrderItemRepository,
+    InventoryRepository,
   ],
 })
-export class ItemsModule {}
+export class OrdersModule {}

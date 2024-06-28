@@ -9,15 +9,12 @@ import {
 import { APP_FILTER } from '@nestjs/core';
 import { MongoExceptionsFilter } from '@app/shared/infrastructure/filters/mongoexceptions.filter';
 import { BrandRepository } from '@app/shared/infrastructure/repositories/brand.repository';
-import { ExceptionsModule } from '@app/shared/infrastructure/exceptions/exceptions.module';
 import { ClientsModule } from '@nestjs/microservices';
 import { SERVICE_NAMES } from '@app/shared/domain/enums';
 import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    ExceptionsModule,
-    DatabaseModule,
     DatabaseModule.forFeature([
       {
         name: BrandDocument.name,
