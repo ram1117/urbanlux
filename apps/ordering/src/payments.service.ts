@@ -80,11 +80,15 @@ export class PaymentsService {
     return { message: 'payment updated.' };
   }
 
-  async createRefund(order_id: string) {
+  async createRefund(order_id: string, refundamount: number = 0) {
     const payment = await this.paymentRepo.findOne({ order_id });
+    const order = await this.orderRepo.findById(order_id);
+    const refundValue = refundamount > 0 ? refundamount : order.total;
+
     const { id } = await this.stripeClient.refunds.create({
       payment_intent: payment.payment_intent,
       reason: 'requested_by_customer',
+      amount: refundValue,
     });
 
     await this.paymentRepo.updateById(payment._id.toString(), {
@@ -92,8 +96,12 @@ export class PaymentsService {
     });
     return await this.orderRepo.updateById(payment.order_id, {
       cancelled: true,
-      payment_status: PAYMENT_STATUS.REFUNDINITIATED,
+      payment_status:
+        refundValue === order.total
+          ? PAYMENT_STATUS.REFUNDCOMPLETE
+          : PAYMENT_STATUS.REFUNDPARTIAL,
       order_status: ORDER_STATUS.CANCELLED,
+      total: order.total - refundValue,
     });
   }
 

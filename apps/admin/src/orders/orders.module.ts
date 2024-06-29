@@ -9,6 +9,8 @@ import {
   OrderItemDocument,
   OrderItemSchema,
   OrderSchema,
+  PaymentDocument,
+  PaymentSchema,
   UserDocument,
   UserSchema,
 } from '@app/shared/infrastructure/models';
@@ -22,6 +24,8 @@ import {
   InventoryRepository,
   OrderItemRepository,
   OrderRepository,
+  PaymentRepository,
+  UserRepository,
 } from '@app/shared/infrastructure/repositories';
 
 @Module({
@@ -31,6 +35,7 @@ import {
       { name: OrderItemDocument.name, schema: OrderItemSchema },
       { name: InventoryDocument.name, schema: InventorySchema },
       { name: UserDocument.name, schema: UserSchema },
+      { name: PaymentDocument.name, schema: PaymentSchema },
     ]),
     ConfigModule.forRoot({
       envFilePath: 'apps/admin/.env',
@@ -54,7 +59,9 @@ import {
     { provide: APP_FILTER, useClass: MongoExceptionsFilter },
     OrderRepository,
     OrderItemRepository,
+    UserRepository,
     InventoryRepository,
+    PaymentRepository,
   ],
 })
 export class OrdersModule {}

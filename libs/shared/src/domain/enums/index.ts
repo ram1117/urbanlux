@@ -17,17 +17,18 @@ export enum SERVICE_PATTERNS {
 
 export enum ORDER_STATUS {
   PLACED = 'placed',
+  CONFIRMED = 'confirmed',
   CANCELLED = 'cancelled',
-  FULFILLED = 'fulfilled',
-  NOTFULFILLED = 'not fulfilled',
+  DISPATCHED = 'dispatched',
 }
 
 export enum PAYMENT_STATUS {
   PENDING = 'pending',
   CONFIRMATION = 'waiting confirmation',
   COMPLETE = 'complete',
-  REFUNDINITIATED = 'refund initiated',
-  REFUNDCOMPLETE = 'refund completed',
+  REFUNDINITIATE = 'refund initiated',
+  REFUNDCOMPLETE = 'refund complete',
+  REFUNDPARTIAL = 'partial refund initiated',
 }
 
 export enum SORT_VALUES {

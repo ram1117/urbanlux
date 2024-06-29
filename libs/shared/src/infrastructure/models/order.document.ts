@@ -27,6 +27,12 @@ export class OrderDocument extends AbstractDocument {
 
   @Prop()
   cancelled: boolean;
+
+  @Prop()
+  comments: string[];
+
+  @Prop()
+  tracking_id: string;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(OrderDocument);

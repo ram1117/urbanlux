@@ -41,6 +41,7 @@ export class OrderingService {
           merchandise_name: merchandise.name,
           merchandise_thumbnail: merchandise.thumbnail,
           inventory: inventory._id.toString(),
+          available: null,
         });
       }),
     );
@@ -58,6 +59,8 @@ export class OrderingService {
       order_status: ORDER_STATUS.PLACED,
       user: userid,
       cancelled: false,
+      comments: ['Order placed'],
+      tracking_id: null,
     });
 
     const intent = await this.paymentService.createIntent(
