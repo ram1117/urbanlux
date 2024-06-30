@@ -8,7 +8,6 @@ import { ORDER_STATUS, PAYMENT_STATUS } from '@app/shared/domain/enums';
 import { AddressRepository } from '@app/shared/infrastructure/repositories/address.repository';
 import { PaymentsService } from './payments.service';
 import { ExceptionsService } from '@app/shared/infrastructure/exceptions/exceptions.service';
-import { PaymentRepository } from '@app/shared/infrastructure/repositories';
 
 @Injectable()
 export class OrderingService {
@@ -19,7 +18,6 @@ export class OrderingService {
     private readonly merchRepo: MerchandiseRepository,
     private readonly inventoryRepo: InventoryRepository,
     private readonly addressRepo: AddressRepository,
-    private readonly paymentRepo: PaymentRepository,
     private readonly paymentService: PaymentsService,
   ) {}
 
@@ -53,16 +51,6 @@ export class OrderingService {
     const billing_address = await this.addressRepo.findById(
       createOrderDto.billing_address,
     );
-    const intent = await this.paymentService.createIntent(
-      userid,
-      total,
-      billing_address,
-    );
-    if (!intent) {
-      this.exceptions.internalServerException({
-        message: 'Unable to create payment intent',
-      });
-    }
 
     const order = await this.orderRepo.create({
       items: orderitems,
@@ -75,11 +63,17 @@ export class OrderingService {
       comments: ['Order placed'],
       tracking_id: null,
     });
-    await this.paymentRepo.create({
-      order_id: order._id.toString(),
-      payment_intent: intent,
-      refund_id: null,
-    });
+    const intent = await this.paymentService.createIntent(
+      userid,
+      order._id.toString(),
+      total,
+      billing_address,
+    );
+    if (!intent) {
+      this.exceptions.internalServerException({
+        message: 'Unable to create payment intent',
+      });
+    }
     return order;
   }
 

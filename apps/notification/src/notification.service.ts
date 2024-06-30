@@ -22,11 +22,10 @@ export class NotificationService {
   };
 
   async sendUserEmail(payload: PayloadDto) {
-    console.log('***************************sending email to user');
     await this.mailerService.sendMail({
       to: payload.email,
-      subject: 'New Order Alert',
-      template: './neworder',
+      subject: 'Order Status update',
+      template: this.getTemplate[payload.order_status],
       context: {
         name: payload.username,
         link: `${this.configService.get('FRONT_END_URL')}/account/orders/${payload.orderid}`,
@@ -35,7 +34,6 @@ export class NotificationService {
   }
 
   async sendUserAdmin() {
-    console.log('***************************sending email to admin');
     const admin = await this.userRepo.findOne({ role: USER_ROLES.admin });
     await this.mailerService.sendMail({
       to: admin.email,

@@ -76,6 +76,12 @@ import { AuthGuard } from '@app/shared/infrastructure/guards/auth.guard';
         useFactory: (configService: ConfigService) =>
           configService.getOrThrow('authconfig'),
       },
+      {
+        name: SERVICE_NAMES.NOTIFICATION,
+        inject: [ConfigService],
+        useFactory: (configService: ConfigService) =>
+          configService.getOrThrow('notificationsconfig'),
+      },
     ]),
     AddressModule,
   ],

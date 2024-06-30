@@ -30,9 +30,14 @@ export class PaymentsService {
     @Inject(SERVICE_NAMES.AUTH) private notificationService: ClientProxy,
   ) {}
 
-  async createIntent(userid: string, total: number, address: AddressDocumet) {
+  async createIntent(
+    userid: string,
+    orderid: string,
+    total: number,
+    address: AddressDocumet,
+  ) {
     const payment_intent = await this.stripeClient.paymentIntents.create({
-      description: userid,
+      description: `user ${userid} - order ${orderid}`,
       shipping: {
         name: address.fullname,
         address: {
@@ -59,8 +64,13 @@ export class PaymentsService {
         message: 'Unable to create payment intent',
       });
     }
+    await this.paymentRepo.create({
+      order_id: orderid,
+      payment_intent: payment_intent.id,
+      refund_id: null,
+    });
 
-    return payment_intent.id;
+    return payment_intent;
   }
 
   async findSecret(orderid: string) {
@@ -81,7 +91,6 @@ export class PaymentsService {
     await this.orderRepo.updateById(order_id, {
       payment_status: PAYMENT_STATUS.COMPLETE,
     });
-
     this.notificationService.emit(
       { cmd: SERVICE_PATTERNS.NOTIFYADMIN },
       {
@@ -120,7 +129,9 @@ export class PaymentsService {
           : PAYMENT_STATUS.REFUNDPARTIAL,
       order_status: ORDER_STATUS.CANCELLED,
       total: order.total - refundValue,
+      comments: ['order cancelled by user'],
     });
+
     this.notificationService.emit(
       { cmd: SERVICE_PATTERNS.NOTIFYUSER },
       {

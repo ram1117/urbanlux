@@ -9,6 +9,7 @@ export enum QUEUE_NAMES {
 
 export enum SERVICE_NAMES {
   AUTH = 'AUTH_SERVICE',
+  NOTIFICATION = 'NOTIFICATION_SERVICE',
 }
 
 export enum SERVICE_PATTERNS {

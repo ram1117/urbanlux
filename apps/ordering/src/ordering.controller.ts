@@ -8,17 +8,14 @@ import {
   Patch,
   Post,
   Req,
-  UseGuards,
 } from '@nestjs/common';
 import { OrderingService } from './ordering.service';
 import { CreateOrderDto } from './infrastructure/dtos/createorder.dto';
-import { AuthGuard } from '@app/shared/infrastructure/guards/auth.guard';
 import { CurrentUser } from '@app/shared/infrastructure/decorators/currentuser.decorator';
 import { PaymentsService } from './payments.service';
 import RequestWithRawBody from '@app/shared/domain/IRawBody';
 import { ExceptionsService } from '@app/shared/infrastructure/exceptions/exceptions.service';
 
-@UseGuards(AuthGuard)
 @Controller('order')
 export class OrderingController {
   constructor(

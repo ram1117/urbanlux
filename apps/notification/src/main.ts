@@ -5,7 +5,7 @@ import { ConfigService } from '@nestjs/config';
 async function bootstrap() {
   const app = await NestFactory.create(NotificationModule);
   const configService = app.get(ConfigService);
-  app.connectMicroservice(configService.getOrThrow('authconfig'));
+  app.connectMicroservice(configService.getOrThrow('notificationsconfig'));
   await app.startAllMicroservices();
 }
 bootstrap();

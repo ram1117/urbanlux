@@ -114,7 +114,7 @@ export class OrdersService {
 
     /* Check inventory for item availability and update inventory */
 
-    order.items.forEach(async (item) => {
+    order.items.map(async (item) => {
       const inventory = await this.inventoryRepo.findById(item.inventory);
       const availability = inventory.stock >= item.quantity;
       await this.orderItemRepo.updateById(item._id.toString(), {
@@ -122,7 +122,7 @@ export class OrdersService {
       });
       if (availability) {
         const newstock = inventory.stock - item.quantity;
-        this.inventoryRepo.updateById(inventory._id.toString(), {
+        await this.inventoryRepo.updateById(inventory._id.toString(), {
           stock: newstock,
         });
       } else unavailableItems.push(item);

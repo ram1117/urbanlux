@@ -22,6 +22,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
       { name: UserDocument.name, schema: UserSchema },
     ]),
     ConfigModule.forRoot({
+      isGlobal: true,
       envFilePath: './apps/notification/.env',
       load: [RabbitMQConfig],
       validationSchema: Joi.object({
@@ -30,25 +31,30 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
         REDIS_PORT: Joi.string().required(),
         FRONT_END_URL: Joi.string().required(),
         FRONT_END_URL_ADMIN: Joi.string().required(),
-        MAIL_HOST: Joi.string().required(),
-        MAIL_PORT: Joi.string().required(),
-        MAIL_USER: Joi.string().required(),
-        MAIL_PASS: Joi.string().required(),
-        MAIL_FROM: Joi.string().required(),
+        SMTP_USER: Joi.string().required(),
+        GOOGLE_OAUTH_CLIENT_ID: Joi.string().required(),
+        GOOGLE_OAUTH_CLIENT_SECRET: Joi.string().required(),
+        GOOGLE_OAUTH_REFRESH_TOKEN: Joi.string().required(),
       }),
     }),
     MailerModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         transport: {
-          host: configService.getOrThrow('MAIL_HOST'),
-          port: configService.getOrThrow('MAIL_PORT'),
+          service: 'gmail',
           auth: {
-            user: configService.getOrThrow('MAIL_USER'),
-            pass: configService.getOrThrow('MAIL_PASS'),
+            type: 'OAuth2',
+            user: configService.getOrThrow('SMTP_USER'),
+            clientId: configService.getOrThrow('GOOGLE_OAUTH_CLIENT_ID'),
+            clientSecret: configService.getOrThrow(
+              'GOOGLE_OAUTH_CLIENT_SECRET',
+            ),
+            refreshToken: configService.getOrThrow(
+              'GOOGLE_OAUTH_REFRESH_TOKEN',
+            ),
           },
         },
-        defaults: { from: `"No Reply <${configService.get('MAIL_FROM')}>` },
+        defaults: { from: `${configService.get('SMTP_USER')}` },
         template: {
           dir: join(__dirname, 'templates'),
           adapter: new HandlebarsAdapter(),

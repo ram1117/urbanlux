@@ -9,5 +9,12 @@ export default function RabbitMQConfig() {
         port: process.env.REDIS_PORT,
       },
     },
+    notificationsconfig: {
+      transport: Transport.REDIS,
+      options: {
+        host: process.env.REDIS_HOST,
+        port: process.env.REDIS_PORT,
+      },
+    },
   };
 }
