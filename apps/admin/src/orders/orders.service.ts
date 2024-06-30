@@ -115,17 +115,18 @@ export class OrdersService {
     /* Check inventory for item availability and update inventory */
 
     order.items.map(async (item) => {
-      const inventory = await this.inventoryRepo.findById(item.inventory);
-      const availability = inventory.stock >= item.quantity;
-      await this.orderItemRepo.updateById(item._id.toString(), {
+      const orderitem = await this.orderItemRepo.findById(item);
+      const inventory = await this.inventoryRepo.findById(orderitem.inventory);
+      const availability = inventory.stock >= orderitem.quantity;
+      await this.orderItemRepo.updateById(item, {
         available: availability,
       });
       if (availability) {
-        const newstock = inventory.stock - item.quantity;
+        const newstock = inventory.stock - orderitem.quantity;
         await this.inventoryRepo.updateById(inventory._id.toString(), {
           stock: newstock,
         });
-      } else unavailableItems.push(item);
+      } else unavailableItems.push(orderitem);
     });
 
     /* Cancel and refund full if all items are not available, partial refund otherwise */

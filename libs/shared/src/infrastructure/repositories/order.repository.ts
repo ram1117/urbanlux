@@ -3,7 +3,7 @@ import { AbstractRepository } from '../database/AbstractRepositiry';
 import { OrderDocument } from '../models/order.document';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
-import { UserDocument } from '../models';
+import { OrderItemDocument, UserDocument } from '../models';
 
 @Injectable()
 export class OrderRepository extends AbstractRepository<OrderDocument> {
@@ -48,6 +48,7 @@ export class OrderRepository extends AbstractRepository<OrderDocument> {
         model: UserDocument.name,
         select: 'firstname email',
       })
+      .populate({ path: 'items', model: OrderItemDocument.name })
       .lean<OrderDocument>(true);
   }
 }

@@ -38,8 +38,8 @@ export class OrderingController {
   }
 
   @Get(':id')
-  getOrder(@CurrentUser() user: any, @Param('id') _id: string) {
-    return this.orderingService.findOne(user._id, _id);
+  getOrder(@Param('id') _id: string) {
+    return this.orderingService.findOne(_id);
   }
 
   @Patch('cancel/:id')

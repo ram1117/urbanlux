@@ -32,7 +32,7 @@ export class OrderingService {
         const subtotal = item.quantity * inventory.price;
         total += subtotal;
 
-        return await this.orderItemRepo.create({
+        const orderitem = await this.orderItemRepo.create({
           ...item,
           size: inventory.size,
           subtotal,
@@ -43,6 +43,7 @@ export class OrderingService {
           inventory: inventory._id.toString(),
           available: null,
         });
+        return orderitem._id.toString();
       }),
     );
     const delivery_address = await this.addressRepo.findById(
@@ -81,7 +82,7 @@ export class OrderingService {
     return await this.orderRepo.findManyPopulated({ user: userid });
   }
 
-  async findOne(userid: string, _id: string) {
-    return await this.orderRepo.findOne({ user: userid, _id });
+  async findOne(_id: string) {
+    return await this.orderRepo.findOnePopulated(_id);
   }
 }

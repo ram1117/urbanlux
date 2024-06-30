@@ -14,7 +14,6 @@ export class NotificationController {
 
   @EventPattern({ cmd: SERVICE_PATTERNS.NOTIFYADMIN })
   async sendEmailAdmin() {
-    console.log('admin mail sending');
     await this.notificationService.sendUserAdmin();
   }
 }

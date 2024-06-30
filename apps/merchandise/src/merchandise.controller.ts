@@ -54,7 +54,6 @@ export class MerchandiseController {
 
   @Post('inventory')
   async getInventory(@Body() getInventoryDto: GetInventoryDto) {
-    console.log(getInventoryDto);
     return this.merchandiseService.findManyInventory(getInventoryDto);
   }
 }
