@@ -8,12 +8,12 @@ export class NotificationController {
   constructor(private readonly notificationService: NotificationService) {}
 
   @EventPattern({ cmd: SERVICE_PATTERNS.NOTIFYUSER })
-  sendEmailUser(@Payload() payload: any) {
-    return this.notificationService.sendUserEmail(payload);
+  async sendEmailUser(@Payload() payload: any) {
+    await this.notificationService.sendUserEmail(payload);
   }
 
   @EventPattern({ cmd: SERVICE_PATTERNS.NOTIFYADMIN })
-  sendEmailAdmin(@Payload() payload: any) {
-    return this.notificationService.sendUserAdmin(payload);
+  async sendEmailAdmin() {
+    await this.notificationService.sendUserAdmin();
   }
 }

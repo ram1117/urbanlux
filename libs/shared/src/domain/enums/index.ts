@@ -21,6 +21,7 @@ export enum ORDER_STATUS {
   PLACED = 'placed',
   CONFIRMED = 'confirmed',
   CANCELLED = 'cancelled',
+  SELLERCANCELLED = 'seller cancelled',
   DISPATCHED = 'dispatched',
 }
 

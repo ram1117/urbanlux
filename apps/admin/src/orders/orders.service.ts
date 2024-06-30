@@ -10,13 +10,19 @@ import {
   PaymentRepository,
   UserRepository,
 } from '@app/shared/infrastructure/repositories';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { FilterQuery } from 'mongoose';
 import { FilterOrderDto } from './infrastructure/dtos/filterorder.dto';
-import { ORDER_STATUS, PAYMENT_STATUS } from '@app/shared/domain/enums';
+import {
+  ORDER_STATUS,
+  PAYMENT_STATUS,
+  SERVICE_NAMES,
+  SERVICE_PATTERNS,
+} from '@app/shared/domain/enums';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 import { UpdateDispatchDto } from './infrastructure/dtos/updatedispatch.dto';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class OrdersService {
@@ -32,6 +38,7 @@ export class OrdersService {
     private readonly userRepo: UserRepository,
     private readonly inventoryRepo: InventoryRepository,
     private readonly paymentRepo: PaymentRepository,
+    @Inject(SERVICE_NAMES.AUTH) private notificationService: ClientProxy,
   ) {}
 
   async findOne(id: string) {
@@ -102,19 +109,21 @@ export class OrdersService {
 
   async updateOrderStatus(orderid: string) {
     const order = await this.orderRepo.findById(orderid);
+    const user = await this.userRepo.findById(order.user);
     const unavailableItems: OrderItemDocument[] = [];
 
     /* Check inventory for item availability and update inventory */
 
     order.items.forEach(async (item) => {
       const inventory = await this.inventoryRepo.findById(item.inventory);
-      const availability = inventory.stock - item.quantity > 0;
+      const availability = inventory.stock >= item.quantity;
       await this.orderItemRepo.updateById(item._id.toString(), {
         available: availability,
       });
       if (availability) {
+        const newstock = inventory.stock - item.quantity;
         this.inventoryRepo.updateById(inventory._id.toString(), {
-          stock: inventory.stock - item.quantity,
+          stock: newstock,
         });
       } else unavailableItems.push(item);
     });
@@ -129,28 +138,64 @@ export class OrdersService {
     if (unavailableItems.length > 0) {
       if (unavailableItems.length === order.items.length) {
         await this.createRefund(order._id.toString(), order.total);
-        return await this.orderRepo.updateById(order._id.toString(), {
-          payment_status: PAYMENT_STATUS.REFUNDCOMPLETE,
-          order_status: ORDER_STATUS.CANCELLED,
-          comments: [...comments, `Full refund initiated.`],
-        });
+        const updatedOrder = await this.orderRepo.updateById(
+          order._id.toString(),
+          {
+            payment_status: PAYMENT_STATUS.REFUNDCOMPLETE,
+            order_status: ORDER_STATUS.SELLERCANCELLED,
+            comments: [...comments, `Full refund initiated.`],
+          },
+        );
+        this.notificationService.emit(
+          { cmd: SERVICE_PATTERNS.NOTIFYUSER },
+          {
+            username: user.firstname,
+            email: user.email,
+            orderid: order._id.toString(),
+            order_status: ORDER_STATUS.SELLERCANCELLED,
+          },
+        );
+        return updatedOrder;
       } else {
         let refundAmount = 0;
         unavailableItems.forEach((item) => {
           refundAmount += item.subtotal;
         });
         await this.createRefund(order._id.toString(), refundAmount);
-        return await this.orderRepo.updateById(order._id.toString(), {
-          payment_status: PAYMENT_STATUS.REFUNDPARTIAL,
-          order_status: ORDER_STATUS.CONFIRMED,
-          comments: [...comments, `Partial refund initiated.`],
-        });
+        const updatedOrder = await this.orderRepo.updateById(
+          order._id.toString(),
+          {
+            payment_status: PAYMENT_STATUS.REFUNDPARTIAL,
+            order_status: ORDER_STATUS.CONFIRMED,
+            comments: [...comments, `Partial refund initiated.`],
+          },
+        );
+        this.notificationService.emit(
+          { cmd: SERVICE_PATTERNS.NOTIFYUSER },
+          {
+            username: user.firstname,
+            email: user.email,
+            orderid: order._id.toString(),
+            order_status: ORDER_STATUS.SELLERCANCELLED,
+          },
+        );
+        return updatedOrder;
       }
     }
-    return await this.orderRepo.updateById(order._id.toString(), {
+    const updatedOrder = await this.orderRepo.updateById(order._id.toString(), {
       order_status: ORDER_STATUS.CONFIRMED,
       comments: ['Seller confirmed the order.'],
     });
+    this.notificationService.emit(
+      { cmd: SERVICE_PATTERNS.NOTIFYUSER },
+      {
+        username: user.firstname,
+        email: user.email,
+        orderid: order._id.toString(),
+        order_status: ORDER_STATUS.CONFIRMED,
+      },
+    );
+    return updatedOrder;
   }
 
   async updateDispatch(orderid: string, updateDispatchDto: UpdateDispatchDto) {

@@ -59,7 +59,9 @@
       "entryFile": "main",
       "sourceRoot": "apps/notification/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/notification/tsconfig.app.json"
+        "tsConfigPath": "apps/notification/tsconfig.app.json",
+        "assets": ["**/*.hbs", "**/*.jpeg", "**/*.css"],
+        "watchAssets": true
       }
     }
   },

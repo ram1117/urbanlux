@@ -46,8 +46,8 @@ export class OrderingController {
   }
 
   @Patch('cancel/:id')
-  cancelOrder(@Param('id') orderid: string) {
-    return this.paymentService.createRefund(orderid);
+  cancelOrder(@Param('id') orderid: string, @CurrentUser() user: any) {
+    return this.paymentService.createRefund(orderid, user);
   }
 
   @Get('payment/:id')
@@ -56,9 +56,8 @@ export class OrderingController {
   }
 
   @Post('payment/:id')
-  updatePaymentStatus(@Param('id') intentid: string) {
-    console.log(intentid);
-    return this.paymentService.updatePaymentStatus(intentid);
+  updatePaymentStatus(@Param('id') intentid: string, @CurrentUser() user: any) {
+    return this.paymentService.updatePaymentStatus(intentid, user);
   }
 
   @Post('payment/webhook')

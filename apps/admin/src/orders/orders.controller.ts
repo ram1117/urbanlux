@@ -44,7 +44,6 @@ export class OrdersController {
     @Param('id') orderid: string,
     @Body() updateDispatchDto: UpdateDispatchDto,
   ) {
-    console.log(updateDispatchDto);
     return this.ordersService.updateDispatch(orderid, updateDispatchDto);
   }
 

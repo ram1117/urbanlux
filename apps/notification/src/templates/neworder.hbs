@@ -1,0 +1,43 @@
+<html>
+  <head>
+  </head>
+  <body style='width: 100%;'>
+    <header
+      style='
+        padding: 1rem;
+        border-bottom: 2px solid black
+        width: 100%;
+      '
+    >
+      <div
+        style='display:flex flex-direction: row; border: 2px solid white; padding:4px'
+      >
+        <h2
+          style='font-size: 2rem; font-weight:700; color:white background-color:black'
+        >Urban</h2>
+        <h2
+          style='font-size: 2rem; font-weight:700; color:black background-color:white'
+        >Trends</h2>
+      </div>
+
+    </header>
+    <section style='height:80vh; width:full; font-size:1.2rem'>
+      <p>Warm greetings,
+        <span style='font-size: 1.3rem; font-weight:700;'>{{name}}</span></p>
+      <p>
+        Customer has placed a new order
+      </p>
+      <a
+        target='_blank'
+        style='background-color:black ; color:white; font-weight:600; padding:1rem; text-decoration:none; display:inline-block '
+        href={{link}}
+        role='button'
+      >New Order</a>
+    </section>
+    <footer style='border-top: 2px black solid;'>
+      <h2
+        style='font-size: 1.2rem; font-weight:700; margin: 2rem 0rem'
+      >UrbanTrends Team</h2>
+    </footer>
+  </body>
+</html>
