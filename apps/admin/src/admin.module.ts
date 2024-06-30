@@ -26,7 +26,12 @@ import RabbitMQConfig from '@app/shared/infrastructure/config/messagequeue.confi
       isGlobal: true,
       validationSchema: Joi.object({
         DATABASE_URL: Joi.string().required(),
+
+        REDIS_HOST: Joi.string().required(),
+        REDIS_PORT: Joi.string().required(),
         FRONT_END_URL: Joi.string().required(),
+        FRONT_END_URL_ADMIN: Joi.string().required(),
+        STRIPE_SECRET_KEY: Joi.string().required(),
       }),
     }),
     ClientsModule.registerAsync([

@@ -15,7 +15,10 @@ async function bootstrap() {
   );
   const configService = app.get(ConfigService);
   app.enableCors({
-    origin: configService.getOrThrow('FRONT_END_URL'),
+    origin: [
+      configService.getOrThrow('FRONT_END_URL'),
+      configService.getOrThrow('FRONT_END_URL_ADMIN'),
+    ],
     credentials: true,
   });
   app.setGlobalPrefix('admin');

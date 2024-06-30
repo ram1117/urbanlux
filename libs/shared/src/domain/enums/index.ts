@@ -13,6 +13,8 @@ export enum SERVICE_NAMES {
 
 export enum SERVICE_PATTERNS {
   AUTH = 'authenticate_user',
+  NOTIFYADMIN = 'notify_admin',
+  NOTIFYUSER = 'notify_user',
 }
 
 export enum ORDER_STATUS {
