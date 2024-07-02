@@ -35,9 +35,19 @@ export class MerchandiseController {
     return this.merchandiseService.findManyTopBrands();
   }
 
+  @Get('brands/:id')
+  getBrand(@Param('id') id: string) {
+    return this.merchandiseService.findOneBrand(id);
+  }
+
   @Get('category')
   getCategories() {
     return this.merchandiseService.findManyCategory();
+  }
+
+  @Get('category/:id')
+  getCategory(@Param('id') id: string) {
+    return this.merchandiseService.findOneCategory(id);
   }
 
   @Get('brandscategories')
