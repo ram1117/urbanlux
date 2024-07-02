@@ -51,6 +51,12 @@ import {
         useFactory: (configService: ConfigService) =>
           configService.getOrThrow('authconfig'),
       },
+      {
+        name: SERVICE_NAMES.NOTIFICATION,
+        inject: [ConfigService],
+        useFactory: (configService: ConfigService) =>
+          configService.getOrThrow('notificationsconfig'),
+      },
     ]),
   ],
   controllers: [OrdersController],

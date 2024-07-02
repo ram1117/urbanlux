@@ -27,7 +27,8 @@ export class PaymentsService {
     private readonly orderRepo: OrderRepository,
     private readonly configService: ConfigService,
     private readonly exceptions: ExceptionsService,
-    @Inject(SERVICE_NAMES.AUTH) private notificationService: ClientProxy,
+    @Inject(SERVICE_NAMES.NOTIFICATION)
+    private notificationService: ClientProxy,
   ) {}
 
   async createIntent(
