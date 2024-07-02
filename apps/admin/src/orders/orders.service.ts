@@ -38,7 +38,8 @@ export class OrdersService {
     private readonly userRepo: UserRepository,
     private readonly inventoryRepo: InventoryRepository,
     private readonly paymentRepo: PaymentRepository,
-    @Inject(SERVICE_NAMES.AUTH) private notificationService: ClientProxy,
+    @Inject(SERVICE_NAMES.NOTIFICATION)
+    private notificationService: ClientProxy,
   ) {}
 
   async findOne(id: string) {
