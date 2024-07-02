@@ -1,19 +1,24 @@
 import { Transport } from '@nestjs/microservices';
 
+export enum QUEUE_NAMES {
+  AUTH = 'auth_queue',
+  NOTIFICATION = 'notification_queue',
+}
+
 export default function RabbitMQConfig() {
   return {
     authconfig: {
-      transport: Transport.REDIS,
+      transport: Transport.RMQ,
       options: {
-        host: process.env.REDIS_HOST,
-        port: process.env.REDIS_PORT,
+        urls: [process.env.RABBITMQ_URL],
+        queue: QUEUE_NAMES.AUTH,
       },
     },
     notificationsconfig: {
-      transport: Transport.REDIS,
+      transport: Transport.RMQ,
       options: {
-        host: process.env.REDIS_HOST,
-        port: process.env.REDIS_PORT,
+        urls: [process.env.RABBITMQ_URL],
+        queue: QUEUE_NAMES.NOTIFICATION,
       },
     },
   };

@@ -27,8 +27,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
       load: [RabbitMQConfig],
       validationSchema: Joi.object({
         DATABASE_URL: Joi.string().required(),
-        REDIS_HOST: Joi.string().required(),
-        REDIS_PORT: Joi.string().required(),
+        RABBITMQ_URL: Joi.string().required(),
         FRONT_END_URL: Joi.string().required(),
         FRONT_END_URL_ADMIN: Joi.string().required(),
         SMTP_USER: Joi.string().required(),

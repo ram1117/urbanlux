@@ -31,9 +31,8 @@ import RabbitMQConfig from '@app/shared/infrastructure/config/messagequeue.confi
       isGlobal: true,
       validationSchema: Joi.object({
         DATABASE_URL: Joi.string().required(),
-        GOOGLE_APPLICATION_CREDENTIALS: Joi.string().required(),
-        REDIS_HOST: Joi.string().required(),
-        REDIS_PORT: Joi.string().required(),
+        FIREBASE_CONFIG: Joi.string().required(),
+        RABBITMQ_URL: Joi.string().required(),
         FRONT_END_URL: Joi.string().required(),
       }),
     }),
