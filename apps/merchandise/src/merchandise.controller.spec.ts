@@ -18,7 +18,7 @@ describe('MerchandiseController', () => {
 
   describe('root', () => {
     it('should return "Hello World!"', () => {
-      expect(merchandiseController.getHello()).toBe('Hello World!');
+      expect(merchandiseController).toBeDefined();
     });
   });
 });

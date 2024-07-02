@@ -53,6 +53,19 @@ services:
     volumes:
       - .:/usr/src/app
 
+  notification:
+    build: 
+      context: .
+      dockerfile: ./apps/notification/Dockerfile
+      
+    command: npm run start:dev notification
+    env_file:
+      - ./apps/notification/.env
+    ports:
+      - '3005:3005'
+    volumes:
+      - .:/usr/src/app
+
   mongo:
     container_name: mongodb
     image: mongo:6-jammy

@@ -30,6 +30,9 @@ export class OrderItemDocument extends AbstractDocument {
 
   @Prop({ type: Types.ObjectId, ref: InventoryDocument.name })
   inventory: string;
+
+  @Prop()
+  available: boolean;
 }
 
 export const OrderItemSchema = SchemaFactory.createForClass(OrderItemDocument);

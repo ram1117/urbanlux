@@ -8,7 +8,7 @@ import { UserDocument } from './user.document';
 @Schema({ versionKey: false, timestamps: true })
 export class OrderDocument extends AbstractDocument {
   @Prop({ type: Types.ObjectId, ref: OrderItemDocument.name })
-  items: OrderItemDocument[];
+  items: string[];
 
   @Prop()
   total: number;
@@ -27,6 +27,12 @@ export class OrderDocument extends AbstractDocument {
 
   @Prop()
   cancelled: boolean;
+
+  @Prop()
+  comments: string[];
+
+  @Prop()
+  tracking_id: string;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(OrderDocument);

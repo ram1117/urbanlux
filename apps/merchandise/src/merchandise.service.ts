@@ -94,12 +94,20 @@ export class MerchandiseService {
     return item;
   }
 
+  async findOneBrand(_id: string) {
+    return await this.brandRepo.findById(_id);
+  }
+
   async findManyBrand() {
     return await this.brandRepo.findMany({}, { name: 1 });
   }
 
   async findManyTopBrands() {
     return await this.brandRepo.findMany({ create_store: true });
+  }
+
+  async findOneCategory(_id: string) {
+    return await this.categoryRepo.findById(_id);
   }
 
   async findManyCategory() {

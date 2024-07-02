@@ -8,17 +8,14 @@ import {
   Patch,
   Post,
   Req,
-  UseGuards,
 } from '@nestjs/common';
 import { OrderingService } from './ordering.service';
 import { CreateOrderDto } from './infrastructure/dtos/createorder.dto';
-import { AuthGuard } from '@app/shared/infrastructure/guards/auth.guard';
 import { CurrentUser } from '@app/shared/infrastructure/decorators/currentuser.decorator';
 import { PaymentsService } from './payments.service';
 import RequestWithRawBody from '@app/shared/domain/IRawBody';
 import { ExceptionsService } from '@app/shared/infrastructure/exceptions/exceptions.service';
 
-@UseGuards(AuthGuard)
 @Controller('order')
 export class OrderingController {
   constructor(
@@ -41,13 +38,13 @@ export class OrderingController {
   }
 
   @Get(':id')
-  getOrder(@CurrentUser() user: any, @Param('id') _id: string) {
-    return this.orderingService.findOne(user._id, _id);
+  getOrder(@Param('id') _id: string) {
+    return this.orderingService.findOne(_id);
   }
 
   @Patch('cancel/:id')
-  cancelOrder(@Param('id') orderid: string) {
-    return this.paymentService.createRefund(orderid);
+  cancelOrder(@Param('id') orderid: string, @CurrentUser() user: any) {
+    return this.paymentService.createRefund(orderid, user);
   }
 
   @Get('payment/:id')
@@ -56,9 +53,8 @@ export class OrderingController {
   }
 
   @Post('payment/:id')
-  updatePaymentStatus(@Param('id') intentid: string) {
-    console.log(intentid);
-    return this.paymentService.updatePaymentStatus(intentid);
+  updatePaymentStatus(@Param('id') intentid: string, @CurrentUser() user: any) {
+    return this.paymentService.updatePaymentStatus(intentid, user);
   }
 
   @Post('payment/webhook')

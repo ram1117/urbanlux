@@ -32,7 +32,7 @@ export class OrderingService {
         const subtotal = item.quantity * inventory.price;
         total += subtotal;
 
-        return await this.orderItemRepo.create({
+        const orderitem = await this.orderItemRepo.create({
           ...item,
           size: inventory.size,
           subtotal,
@@ -41,7 +41,9 @@ export class OrderingService {
           merchandise_name: merchandise.name,
           merchandise_thumbnail: merchandise.thumbnail,
           inventory: inventory._id.toString(),
+          available: null,
         });
+        return orderitem._id.toString();
       }),
     );
     const delivery_address = await this.addressRepo.findById(
@@ -50,6 +52,7 @@ export class OrderingService {
     const billing_address = await this.addressRepo.findById(
       createOrderDto.billing_address,
     );
+
     const order = await this.orderRepo.create({
       items: orderitems,
       address: delivery_address,
@@ -58,10 +61,13 @@ export class OrderingService {
       order_status: ORDER_STATUS.PLACED,
       user: userid,
       cancelled: false,
+      comments: ['Order placed'],
+      tracking_id: null,
     });
-
     const intent = await this.paymentService.createIntent(
-      order,
+      userid,
+      order._id.toString(),
+      total,
       billing_address,
     );
     if (!intent) {
@@ -69,7 +75,6 @@ export class OrderingService {
         message: 'Unable to create payment intent',
       });
     }
-
     return order;
   }
 
@@ -77,7 +82,7 @@ export class OrderingService {
     return await this.orderRepo.findManyPopulated({ user: userid });
   }
 
-  async findOne(userid: string, _id: string) {
-    return await this.orderRepo.findOne({ user: userid, _id });
+  async findOne(_id: string) {
+    return await this.orderRepo.findOnePopulated(_id);
   }
 }

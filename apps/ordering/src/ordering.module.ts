@@ -8,7 +8,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import RabbitMQConfig from '@app/shared/infrastructure/config/messagequeue.config';
 import * as Joi from 'joi';
 import { MongoExceptionsFilter } from '@app/shared/infrastructure/filters/mongoexceptions.filter';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { AddressModule } from './address/address.module';
 import { ClientsModule } from '@nestjs/microservices';
 import { SERVICE_NAMES } from '@app/shared/domain/enums';
@@ -39,6 +39,7 @@ import {
   OrderRepository,
   PaymentRepository,
 } from '@app/shared/infrastructure/repositories';
+import { AuthGuard } from '@app/shared/infrastructure/guards/auth.guard';
 
 @Module({
   imports: [
@@ -75,12 +76,19 @@ import {
         useFactory: (configService: ConfigService) =>
           configService.getOrThrow('authconfig'),
       },
+      {
+        name: SERVICE_NAMES.NOTIFICATION,
+        inject: [ConfigService],
+        useFactory: (configService: ConfigService) =>
+          configService.getOrThrow('notificationsconfig'),
+      },
     ]),
     AddressModule,
   ],
   controllers: [OrderingController],
   providers: [
     { provide: APP_FILTER, useClass: MongoExceptionsFilter },
+    { provide: APP_GUARD, useClass: AuthGuard },
     OrderingService,
     PaymentsService,
     OrderRepository,

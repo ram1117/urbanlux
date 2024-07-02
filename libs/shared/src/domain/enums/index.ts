@@ -9,25 +9,30 @@ export enum QUEUE_NAMES {
 
 export enum SERVICE_NAMES {
   AUTH = 'AUTH_SERVICE',
+  NOTIFICATION = 'NOTIFICATION_SERVICE',
 }
 
 export enum SERVICE_PATTERNS {
   AUTH = 'authenticate_user',
+  NOTIFYADMIN = 'notify_admin',
+  NOTIFYUSER = 'notify_user',
 }
 
 export enum ORDER_STATUS {
   PLACED = 'placed',
+  CONFIRMED = 'confirmed',
   CANCELLED = 'cancelled',
-  FULFILLED = 'fulfilled',
-  NOTFULFILLED = 'not fulfilled',
+  SELLERCANCELLED = 'seller cancelled',
+  DISPATCHED = 'dispatched',
 }
 
 export enum PAYMENT_STATUS {
   PENDING = 'pending',
   CONFIRMATION = 'waiting confirmation',
   COMPLETE = 'complete',
-  REFUNDINITIATED = 'refund initiated',
-  REFUNDCOMPLETE = 'refund completed',
+  REFUNDINITIATE = 'refund initiated',
+  REFUNDCOMPLETE = 'refund complete',
+  REFUNDPARTIAL = 'partial refund initiated',
 }
 
 export enum SORT_VALUES {

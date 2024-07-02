@@ -11,7 +11,7 @@ export class PaymentDocument extends AbstractDocument {
   @Prop({ unique: true })
   payment_intent: string;
 
-  @Prop({ unique: true })
+  @Prop()
   refund_id: string;
 }
 

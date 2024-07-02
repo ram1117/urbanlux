@@ -1,15 +1,18 @@
-import { ORDER_STATUS, PAYMENT_STATUS } from '@app/shared/domain/enums';
-import { ExceptionsService } from '@app/shared/infrastructure/exceptions/exceptions.service';
 import {
-  AddressDocumet,
-  OrderDocument,
-} from '@app/shared/infrastructure/models';
+  ORDER_STATUS,
+  PAYMENT_STATUS,
+  SERVICE_NAMES,
+  SERVICE_PATTERNS,
+} from '@app/shared/domain/enums';
+import { ExceptionsService } from '@app/shared/infrastructure/exceptions/exceptions.service';
+import { AddressDocumet } from '@app/shared/infrastructure/models';
 import {
   OrderRepository,
   PaymentRepository,
 } from '@app/shared/infrastructure/repositories';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { ClientProxy } from '@nestjs/microservices';
 import Stripe from 'stripe';
 
 @Injectable()
@@ -24,11 +27,17 @@ export class PaymentsService {
     private readonly orderRepo: OrderRepository,
     private readonly configService: ConfigService,
     private readonly exceptions: ExceptionsService,
+    @Inject(SERVICE_NAMES.AUTH) private notificationService: ClientProxy,
   ) {}
 
-  async createIntent(order: OrderDocument, address: AddressDocumet) {
+  async createIntent(
+    userid: string,
+    orderid: string,
+    total: number,
+    address: AddressDocumet,
+  ) {
     const payment_intent = await this.stripeClient.paymentIntents.create({
-      description: `order-${order._id.toString()}`,
+      description: `user ${userid} - order ${orderid}`,
       shipping: {
         name: address.fullname,
         address: {
@@ -40,7 +49,7 @@ export class PaymentsService {
           city: address.city,
         },
       },
-      amount: order.total * 100,
+      amount: total * 100,
       currency: 'usd',
       confirm: true,
       payment_method: 'pm_card_visa',
@@ -55,46 +64,84 @@ export class PaymentsService {
         message: 'Unable to create payment intent',
       });
     }
-
-    return await this.paymentRepo.create({
-      order_id: order._id.toString(),
+    await this.paymentRepo.create({
+      order_id: orderid,
       payment_intent: payment_intent.id,
       refund_id: null,
     });
+
+    return payment_intent;
   }
 
   async findSecret(orderid: string) {
-    const intent_id = (await this.paymentRepo.findOne({ order_id: orderid }))
-      .payment_intent;
+    const orderpayment = await this.paymentRepo.findOne({ order_id: orderid });
+    if (!orderpayment)
+      this.exceptions.notfoundException({
+        message: 'Payment details not found',
+      });
+    const intent_id = orderpayment.payment_intent;
     const order = await this.orderRepo.findById(orderid);
     const intent = await this.stripeClient.paymentIntents.retrieve(intent_id);
     return { secret: intent.client_secret, order };
   }
 
-  async updatePaymentStatus(payment_intent: string) {
+  async updatePaymentStatus(payment_intent: string, user: any) {
     const order_id = (await this.paymentRepo.findOne({ payment_intent }))
       .order_id;
     await this.orderRepo.updateById(order_id, {
       payment_status: PAYMENT_STATUS.COMPLETE,
     });
+    this.notificationService.emit(
+      { cmd: SERVICE_PATTERNS.NOTIFYADMIN },
+      {
+        username: user.name,
+        email: user.email,
+        orderid: order_id,
+        order_status: ORDER_STATUS.PLACED,
+      },
+    );
+
     return { message: 'payment updated.' };
   }
 
-  async createRefund(order_id: string) {
+  async createRefund(order_id: string, user: any, refundamount: number = 0) {
     const payment = await this.paymentRepo.findOne({ order_id });
+    const order = await this.orderRepo.findOne({
+      _id: order_id,
+      user: user._id,
+    });
+    const refundValue = refundamount > 0 ? refundamount : order.total;
+
     const { id } = await this.stripeClient.refunds.create({
       payment_intent: payment.payment_intent,
       reason: 'requested_by_customer',
+      amount: refundValue,
     });
 
     await this.paymentRepo.updateById(payment._id.toString(), {
       refund_id: id,
     });
-    return await this.orderRepo.updateById(payment.order_id, {
+    const udpatedorder = await this.orderRepo.updateById(payment.order_id, {
       cancelled: true,
-      payment_status: PAYMENT_STATUS.REFUNDINITIATED,
+      payment_status:
+        refundValue === order.total
+          ? PAYMENT_STATUS.REFUNDCOMPLETE
+          : PAYMENT_STATUS.REFUNDPARTIAL,
       order_status: ORDER_STATUS.CANCELLED,
+      total: order.total - refundValue,
+      comments: ['order cancelled by user'],
     });
+
+    this.notificationService.emit(
+      { cmd: SERVICE_PATTERNS.NOTIFYUSER },
+      {
+        username: user.name,
+        email: user.email,
+        orderid: order_id,
+        order_status: ORDER_STATUS.CANCELLED,
+      },
+    );
+    return udpatedorder;
   }
 
   async handleHookEvent(signature: string, payload: Buffer) {

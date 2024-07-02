@@ -42,6 +42,7 @@ export class AuthenticationService {
           _id: user._id,
           email: claims.email,
           role: user.role,
+          name: user.firstname,
         };
       }
     } catch (error) {
