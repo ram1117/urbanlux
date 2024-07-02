@@ -6,9 +6,7 @@ import {
   AddressDocumet,
   AddressSchema,
 } from '@app/shared/infrastructure/models/address.document';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import * as Joi from 'joi';
-import RabbitMQConfig from '@app/shared/infrastructure/config/messagequeue.config';
+import { ConfigService } from '@nestjs/config';
 import { ClientsModule } from '@nestjs/microservices';
 import { SERVICE_NAMES } from '@app/shared/domain/enums';
 import { ExceptionsModule } from '@app/shared/infrastructure/exceptions/exceptions.module';
@@ -31,16 +29,7 @@ import { UserRepository } from '@app/shared/infrastructure/repositories/user.rep
       { name: AddressDocumet.name, schema: AddressSchema },
       { name: UserDocument.name, schema: UserSchema },
     ]),
-    ConfigModule.forRoot({
-      isGlobal: true,
-      load: [RabbitMQConfig],
-      envFilePath: 'apps/ordering/.env',
-      validationSchema: Joi.object({
-        DATABASE_URL: Joi.string().required(),
-        REDIS_HOST: Joi.string().required(),
-        REDIS_PORT: Joi.string().required(),
-      }),
-    }),
+
     ClientsModule.registerAsync([
       {
         name: SERVICE_NAMES.AUTH,
