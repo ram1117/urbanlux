@@ -1,0 +1,83 @@
+version: '3'
+services:
+
+  merchandise:
+    build: 
+      context: .
+      dockerfile: ./apps/merchandise/Dockerfile
+      
+    command: npm run start:dev merchandise
+    env_file:
+      - ./apps/merchandise/.env
+    ports:
+      - '3001:3001'
+    volumes:
+      - .:/usr/src/app
+
+  admin:
+    build: 
+      context: .
+      dockerfile: ./apps/admin/Dockerfile
+      
+    command: npm run start:dev admin
+    env_file:
+      - ./apps/admin/.env
+    ports:
+      - '3002:3002'
+    volumes:
+      - .:/usr/src/app
+
+  authentication:
+    build: 
+      context: .
+      dockerfile: ./apps/authentication/Dockerfile
+      
+    command: npm run start:dev authentication
+    env_file:
+      - ./apps/authentication/.env
+    ports:
+      - '3003:3003'
+    volumes:
+      - .:/usr/src/app
+
+  ordering:
+    build: 
+      context: .
+      dockerfile: ./apps/ordering/Dockerfile
+      
+    command: npm run start:dev ordering
+    env_file:
+      - ./apps/ordering/.env
+    ports:
+      - '3004:3004'
+    volumes:
+      - .:/usr/src/app
+
+  notification:
+    build: 
+      context: .
+      dockerfile: ./apps/notification/Dockerfile
+      
+    command: npm run start:dev notification
+    env_file:
+      - ./apps/notification/.env
+    ports:
+      - '3005:3005'
+    volumes:
+      - .:/usr/src/app
+
+  mongo:
+    container_name: mongodb
+    image: mongo:6-jammy
+    volumes:
+      - dbdata6:/data/db
+    ports:
+      - '27017:27017'
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+volumes:
+  dbdata6:
