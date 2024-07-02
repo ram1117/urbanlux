@@ -62,8 +62,7 @@ import { AuthGuard } from '@app/shared/infrastructure/guards/auth.guard';
       isGlobal: true,
       validationSchema: Joi.object({
         DATABASE_URL: Joi.string().required(),
-        REDIS_HOST: Joi.string().required(),
-        REDIS_PORT: Joi.string().required(),
+        RABBITMQ_URL: Joi.string().required(),
         STRIPE_SECRET_KEY: Joi.string().required(),
         STRIPE_WEBHOOK_SECRET: Joi.string().required(),
         FRONT_END_URL: Joi.string().required(),

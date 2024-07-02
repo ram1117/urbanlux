@@ -74,10 +74,10 @@ services:
     ports:
       - '27017:27017'
 
-  redis:
-    container_name: redis-urbanlux
-    image: redis
+  rabbitmq:
+    image: rabbitmq:3-management
     ports:
-      - '6379:6379'
+      - '5672:5672'
+      - '15672:15672'
 volumes:
   dbdata6:
