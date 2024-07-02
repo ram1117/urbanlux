@@ -3,14 +3,11 @@
 ## Description
 
 **UrbanLux** is the backend NestJs application for an E-commerce application
-I have used Microservice architecture. The project is organized as a monorepo. I used RabbitMQ as messaging broker between microservices and PostgreSQL for database.
+I have used Microservice architecture. The project is organized as a monorepo. I used RabbitMQ as messaging broker between microservices and MongoDB for database.
 
 ## Live Demo
 
-TBA
-A live version of the application is hosted [TBA](TBA).
-
-The service is deployed in free tier and may not be available instantly. Please wait a few minutes for the application to start
+The application is available in Dockerized containers.
 
 ## Getting Started
 
