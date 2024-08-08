@@ -70,7 +70,9 @@
       "entryFile": "main",
       "sourceRoot": "apps/chat/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/chat/tsconfig.app.json"
+        "tsConfigPath": "apps/chat/tsconfig.app.json",
+        "assets": ["**/*.pdf"],
+        "watchAssets": true
       }
     }
   },

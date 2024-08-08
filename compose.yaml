@@ -1,4 +1,3 @@
-version: '3'
 services:
 
   merchandise:
@@ -67,6 +66,7 @@ services:
       - .:/usr/src/app
 
   chat:
+    platform: linux/x86_64
     build:
       context: .
       dockerfile: ./apps/chat/Dockerfile
@@ -74,9 +74,19 @@ services:
     env_file:
       - ./apps/chat/.env
     ports:
-      - '3009:3009'
+      - '3008:3008'
     volumes:
       - .:/usr/src/app
+
+  # ollama:
+  #   volumes:
+  #     - dbdata6:/root/.ollama
+  #   ports:
+  #     - 11434:11434
+  #   container_name: ollama
+  #   pull_policy: always
+  #   tty: true
+  #   image: ollama/ollama:latest
 
   mongo:
     container_name: mongodb

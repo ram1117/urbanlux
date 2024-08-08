@@ -6,7 +6,14 @@ import { ExceptionsModule } from '@app/shared/infrastructure/exceptions/exceptio
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [LoggerModule, ExceptionsModule, ConfigModule.forRoot()],
+  imports: [
+    LoggerModule,
+    ExceptionsModule,
+    ConfigModule.forRoot({
+      envFilePath: 'apps/chat/.env',
+      isGlobal: true,
+    }),
+  ],
   controllers: [ChatController],
   providers: [ChatService],
 })

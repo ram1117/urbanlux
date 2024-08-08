@@ -6,7 +6,8 @@ export class ChatController {
   constructor(private readonly chatService: ChatService) {}
 
   @Post()
-  postPrompt(@Body() prompt: string) {
-    return this.chatService.getLLMResponse(prompt);
+  postPrompt(@Body() prompt: { prompt: string }) {
+    console.log(prompt.prompt);
+    return this.chatService.getLLMResponse(prompt.prompt);
   }
 }
