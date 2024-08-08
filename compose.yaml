@@ -2,10 +2,10 @@ version: '3'
 services:
 
   merchandise:
-    build: 
+    build:
       context: .
       dockerfile: ./apps/merchandise/Dockerfile
-      
+
     command: npm run start:dev merchandise
     env_file:
       - ./apps/merchandise/.env
@@ -15,10 +15,10 @@ services:
       - .:/usr/src/app
 
   admin:
-    build: 
+    build:
       context: .
       dockerfile: ./apps/admin/Dockerfile
-      
+
     command: npm run start:dev admin
     env_file:
       - ./apps/admin/.env
@@ -28,10 +28,10 @@ services:
       - .:/usr/src/app
 
   authentication:
-    build: 
+    build:
       context: .
       dockerfile: ./apps/authentication/Dockerfile
-      
+
     command: npm run start:dev authentication
     env_file:
       - ./apps/authentication/.env
@@ -41,10 +41,10 @@ services:
       - .:/usr/src/app
 
   ordering:
-    build: 
+    build:
       context: .
       dockerfile: ./apps/ordering/Dockerfile
-      
+
     command: npm run start:dev ordering
     env_file:
       - ./apps/ordering/.env
@@ -54,15 +54,27 @@ services:
       - .:/usr/src/app
 
   notification:
-    build: 
+    build:
       context: .
       dockerfile: ./apps/notification/Dockerfile
-      
+
     command: npm run start:dev notification
     env_file:
       - ./apps/notification/.env
     ports:
       - '3005:3005'
+    volumes:
+      - .:/usr/src/app
+
+  chat:
+    build:
+      context: .
+      dockerfile: ./apps/chat/Dockerfile
+    command: npm run start:dev chat
+    env_file:
+      - ./apps/chat/.env
+    ports:
+      - '3009:3009'
     volumes:
       - .:/usr/src/app
 
