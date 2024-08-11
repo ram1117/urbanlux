@@ -5,7 +5,7 @@ import {
   Settings,
   VectorStoreIndex,
   SimpleDirectoryReader,
-  Ollama,
+  OpenAI,
   HuggingFaceEmbedding,
 } from 'llamaindex';
 
@@ -14,8 +14,9 @@ export class ChatService implements OnModuleInit {
   chatEngine: ContextChatEngine;
   constructor(private readonly exceptions: ExceptionsService) {}
   async onModuleInit() {
-    const llm = new Ollama({
-      model: 'gemma2:2b',
+    const llm = new OpenAI({
+      model: 'gpt-4o-mini',
+      temperature: 0,
     });
     Settings.embedModel = new HuggingFaceEmbedding({
       modelType: 'BAAI/bge-small-en-v1.5',
@@ -36,10 +37,14 @@ export class ChatService implements OnModuleInit {
     }
     try {
       const stream = await this.chatEngine.chat({
-        message: prompt,
-        stream: true,
+        message: `Answer the user's prompt as briefly as possible in customer friendly tone
+        ---${prompt}---
+        Ignore questions outside UrbanTrend e-commerce store.
+        For navigation related queries, use provided data only
+        `,
+        stream: false,
       });
-      console.log(stream);
+      return { message: stream.message.content };
     } catch (error) {
       console.error(error);
     }

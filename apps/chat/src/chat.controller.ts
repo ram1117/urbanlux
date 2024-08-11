@@ -7,7 +7,6 @@ export class ChatController {
 
   @Post()
   postPrompt(@Body() prompt: { prompt: string }) {
-    console.log(prompt.prompt);
     return this.chatService.getLLMResponse(prompt.prompt);
   }
 }
